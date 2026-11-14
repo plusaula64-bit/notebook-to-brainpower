@@ -28,3 +28,15 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- AulaPlus uses a browser-safe domain module for notebook scoring and grouping so the same rules are unit tested.
+- Student and teacher views are prototype modes, not authorization roles; feedback affects fictional demo students only.
+- The tutor chat streams from Lovable AI Gateway via the server route src/routes/api/public/tutor.ts (handler in src/lib/ai/tutor.server.ts, model openai/gpt-6-astra on Responses, ai@7 requires `instructions` instead of system messages); the local rule-based tutor in src/lib/tutor.ts is only the offline fallback.
+- All imported text (web sources, files, notebook notes sent to the AI) passes through cleanImportedText in src/lib/clean-text.ts: HTML entity decoding plus web-junk line filtering; junk patterns must be line-anchored so educational lines mentioning "compartir" survive.
+- Classroom workspaces own notebooks, activities, student rosters and announcements; all updates target the active classroom ID so classes cannot leak changes into each other.
+- Pet model rendering, appearance controls and classroom controls live in focused components; shared classroom and pet types remain in the browser-safe domain module so isolation can be unit tested.
+- App state lives on the device first: src/lib/local-store.ts writes one versioned key plus per-notebook chats to IndexedDB (localStorage fallback, auto-migrates the old key) so the app works fully offline.
+- Cloud backup is optional and manual: Google sign-in (Lovable Cloud) plus one progress_backups row per user holding the whole local state JSON; upload/download only on user action, local data always wins until the user restores.
+- Offline PWA: vite-plugin-pwa generateSW, registered only from src/lib/pwa-register.ts (blocked in dev, iframes and Lovable previews); SSR has no /index.html, so navigations use NetworkFirst and the home page is pre-warmed after registration; /~oauth and /api are never cached.
+- AI study content (brace-diagram "mapa mental", summary, assisted notes, flashcards) comes from src/routes/api/public/study-ai.ts (handler src/lib/ai/study-ai.server.ts, structured output for the 4-level brace tree and flashcard deck; regenerating a deck sends the previous questions as `exclude` and resets known/review progress because those store card indexes). The AI input is studyMaterial(notebook) = notes + source ideas. Results are cached in notebook.studio.ai keyed by KIND_VERSION[kind] + a hash of name+material (bump the version prefix when a format changes so cached content regenerates); sanitizeMindMap also normalizes old cached maps. src/lib/study-ai.ts builds a local outline when the AI is unreachable. Braces are pure CSS borders (no SVG) so tips stay crisp at any height; deeper levels collapse under their parent via container queries when space is short.
+- Deleting a notebook is immediate with a 6-second "Deshacer" toast; the notebook chat is only purged when the toast closes without undo.

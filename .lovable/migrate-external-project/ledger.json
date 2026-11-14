@@ -1,0 +1,65 @@
+[
+ {
+  "capability": "code",
+  "source": "github aula-pal-learning-nook",
+  "outcome": "migrate",
+  "status": "done",
+  "next_action": "none"
+ },
+ {
+  "capability": "schema",
+  "source": "none (localStorage only)",
+  "outcome": "new cloud backup table",
+  "status": "done",
+  "next_action": "none"
+ },
+ {
+  "capability": "records",
+  "source": "browser localStorage per device",
+  "outcome": "stay local, moved to IndexedDB",
+  "status": "done",
+  "next_action": "none"
+ },
+ {
+  "capability": "auth identities",
+  "source": "none (local name+email form)",
+  "outcome": "add Google sign-in for cloud sync",
+  "status": "implemented",
+  "next_action": "user must test Google sign-in + upload/download"
+ },
+ {
+  "capability": "ai tutor",
+  "source": "Lovable AI Gateway",
+  "outcome": "preserve",
+  "status": "done",
+  "next_action": "none"
+ },
+ {
+  "capability": "public endpoints",
+  "source": "/api/public/tutor",
+  "outcome": "preserve",
+  "status": "done",
+  "next_action": "none"
+ },
+ {
+  "capability": "pwa offline",
+  "source": "vite-plugin-pwa",
+  "outcome": "preserve + fix",
+  "status": "implemented",
+  "next_action": "verify offline open on published app"
+ },
+ {
+  "capability": "secrets",
+  "source": "LOVABLE_API_KEY",
+  "outcome": "auto-provisioned",
+  "status": "done",
+  "next_action": "none"
+ },
+ {
+  "capability": "verification",
+  "source": "-",
+  "outcome": "-",
+  "status": "partial",
+  "next_action": "local flows verified; cloud sync and offline need published app + real account"
+ }
+]

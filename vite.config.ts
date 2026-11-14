@@ -3,16 +3,74 @@
 //   - TanStack devtools (dev-only, first), tanstackStart, viteReact, tailwindcss, tsConfigPaths,
 //     nitro (build-only using cloudflare as a default target), VITE_* env injection, @ path alias,
 //     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
-// Never set ssr.external or resolve.external: the Worker has no runtime module resolution, so
-// the build fails. Never add compression (compressPublicAssets, vite-plugin-compression):
-// hosting already compresses at the edge.
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+  },
+  vite: {
+    plugins: [
+      VitePWA({
+        strategies: "generateSW",
+        registerType: "autoUpdate",
+        injectRegister: null, // el registro lo hace solo src/lib/pwa-register.ts
+        devOptions: { enabled: false },
+        filename: "sw.js",
+        manifest: false, // el manifest vive en public/manifest.webmanifest
+        workbox: {
+          globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2,webmanifest}"],
+          // La app se sirve con SSR (no existe /index.html): las páginas se guardan con
+          // NetworkFirst al visitarlas y la página de inicio se precalienta al registrar.
+          navigateFallback: null,
+          clientsClaim: true,
+          skipWaiting: true,
+          cleanupOutdatedCaches: true,
+          maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
+          runtimeCaching: [
+            {
+              // Navegaciones/HTML: red primero, caché como respaldo offline.
+              urlPattern: ({ request, url }: { request: Request; url: URL }) =>
+                url.origin === self.location.origin &&
+                !url.pathname.startsWith("/~oauth") &&
+                !url.pathname.startsWith("/api/") &&
+                (request.mode === "navigate" || (request.method === "GET" && url.pathname === "/")),
+              handler: "NetworkFirst",
+              options: {
+                cacheName: "aulaplus-pages",
+                networkTimeoutSeconds: 4,
+                cacheableResponse: { statuses: [200] },
+              },
+            },
+            {
+              // Tipografía Nunito (Google Fonts): disponible también sin conexión.
+              urlPattern: ({ url }: { url: URL }) =>
+                url.origin === "https://fonts.googleapis.com" || url.origin === "https://fonts.gstatic.com",
+              handler: "StaleWhileRevalidate",
+              options: {
+                cacheName: "aulaplus-fonts",
+                cacheableResponse: { statuses: [0, 200] },
+                expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              },
+            },
+            {
+              // Assets con hash del propio sitio: caché primero.
+              urlPattern: ({ url, request }: { url: URL; request: Request }) =>
+                url.origin === self.location.origin &&
+                ["style", "script", "worker", "font", "image"].includes(request.destination),
+              handler: "CacheFirst",
+              options: {
+                cacheName: "aulaplus-assets",
+                expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              },
+            },
+          ],
+        },
+      }),
+    ],
   },
 });
