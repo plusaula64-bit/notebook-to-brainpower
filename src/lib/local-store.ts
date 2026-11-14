@@ -44,6 +44,17 @@ async function writeRaw(key: string, value: unknown) {
   try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* almacenamiento lleno */ }
 }
 
+/** Pide al navegador que no borre los datos locales (IndexedDB) cuando falte espacio. */
+export async function requestPersistentStorage() {
+  try {
+    if (typeof navigator === "undefined" || !navigator.storage?.persist) return false;
+    if (await navigator.storage.persisted()) return true;
+    return await navigator.storage.persist();
+  } catch {
+    return false;
+  }
+}
+
 export const loadState = <T>() => readRaw<T>(STATE_KEY);
 export const saveState = (value: unknown) => writeRaw(STATE_KEY, value);
 

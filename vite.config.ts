@@ -7,6 +7,11 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { VitePWA } from "vite-plugin-pwa";
 
+// Copia de la app (HTML de inicio) guardada al instalar el service worker. Usa una URL
+// propia para que la ruta de precarga no intercepte "/" y las páginas sigan en red primero.
+const OFFLINE_SHELL = "/?pwa-shell=1";
+const BUILD_ID = Date.now().toString(36);
+
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
@@ -22,10 +27,15 @@ export default defineConfig({
         devOptions: { enabled: false },
         filename: "sw.js",
         manifest: false, // el manifest vive en public/manifest.webmanifest
+        // Los archivos públicos del build viven en dist/client: el SW debe quedar ahí
+        // (servido en /sw.js) y precargar rutas relativas a esa carpeta.
+        outDir: "dist/client",
         workbox: {
-          globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2,webmanifest}"],
-          // La app se sirve con SSR (no existe /index.html): las páginas se guardan con
-          // NetworkFirst al visitarlas y la página de inicio se precalienta al registrar.
+          globDirectory: "dist/client",
+          globPatterns: ["**/*.{js,mjs,css,html,ico,png,jpg,jpeg,webp,svg,woff,woff2,webmanifest}"],
+          // La app se sirve con SSR (no existe /index.html): se precarga una copia del HTML de
+          // inicio y se usa como respaldo cuando no hay red (ver precacheFallback abajo).
+          additionalManifestEntries: [{ url: OFFLINE_SHELL, revision: BUILD_ID }],
           navigateFallback: null,
           clientsClaim: true,
           skipWaiting: true,
@@ -42,8 +52,10 @@ export default defineConfig({
               handler: "NetworkFirst",
               options: {
                 cacheName: "aulaplus-pages",
-                networkTimeoutSeconds: 4,
+                networkTimeoutSeconds: 3,
                 cacheableResponse: { statuses: [200] },
+                // Sin red ni copia de esa página: sirve el HTML de inicio precargado.
+                precacheFallback: { fallbackURL: OFFLINE_SHELL },
               },
             },
             {

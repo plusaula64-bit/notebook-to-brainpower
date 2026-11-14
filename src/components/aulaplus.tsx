@@ -49,7 +49,7 @@ import {
   WifiOff,
   Trash2,
 } from "lucide-react";
-import { loadState, saveState, loadAllChats, replaceAllChats, deleteChat, type StoredChat } from "@/lib/local-store";
+import { loadState, saveState, requestPersistentStorage, loadAllChats, replaceAllChats, deleteChat, type StoredChat } from "@/lib/local-store";
 import { AiSummaryView, AiNotesAssist } from "./ai-study";
 import { AiFlashcards } from "./ai-flashcards";
 import { uploadBackup, type BackupPayload } from "@/lib/cloud-sync";
@@ -218,6 +218,7 @@ export function AulaPlus() {
     let cancelled = false;
     let timeout: ReturnType<typeof setTimeout> | undefined;
     // Lectura local (IndexedDB): abre al instante y sin internet.
+    void requestPersistentStorage();
     void loadState<SavedState>().then((saved) => {
       if (cancelled) return;
       applySaved(saved);

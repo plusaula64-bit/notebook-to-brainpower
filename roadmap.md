@@ -46,3 +46,5 @@
 - [x] Papelera visible en cada tarjeta de «Mis cuadernos», borra al instante con «Deshacer»
 - [x] Apuntes y Resúmenes adaptados al área de estudio (ciencias, historia, lengua…) e incluyen las fuentes
 - [ ] Probar el inicio de sesión con Google y la copia en la nube con una cuenta real (necesita a la usuaria)
+- [x] PWA offline definitiva: arreglado el service worker publicado (no se instalaba), copia de la app guardada para abrir sin red, datos en IndexedDB protegidos
+- [ ] Comprobar en el celular la app publicada sin internet (necesita publicar)
