@@ -1,5 +1,5 @@
 // Contenido de estudio estructurado (mapa mental, resumen y apuntes asistidos).
-// La IA genera el contenido cuando hay internet; sin conexión se arma un esquema local.
+// La IA genera el contenido cuando está disponible; si no, lo crea el motor interno de Milo (src/lib/milo).
 import { keyTerms, sentences } from "@/lib/tutor";
 
 export type AiKind = "mindmap" | "summary" | "notes" | "flashcards";
@@ -20,11 +20,13 @@ export const FLASHCARD_LABELS: Record<FlashcardType, string> = {
   completar: "Completa",
   verdadero_falso: "¿Verdadero o falso?",
 };
+/** `engine: "milo"` marca el contenido creado por el motor interno de Milo (sin IA externa). */
+export type AiEngine = "ai" | "milo";
 export type AiStudio = {
-  mindmap?: { key: string; data: AiMindMap };
-  flashcards?: { key: string; data: AiFlashcard[] };
-  summary?: { key: string; markdown: string };
-  notes?: { key: string; markdown: string };
+  mindmap?: { key: string; data: AiMindMap; engine?: AiEngine };
+  flashcards?: { key: string; data: AiFlashcard[]; engine?: AiEngine };
+  summary?: { key: string; markdown: string; engine?: AiEngine };
+  notes?: { key: string; markdown: string; engine?: AiEngine };
 };
 
 /** Versión del formato por tipo: al cambiarla se vuelve a generar con IA el contenido guardado. */
@@ -88,7 +90,7 @@ export function sanitizeMindMap(raw: unknown, topic: string): AiMindMap | null {
 }
 
 /** Divide «Término: explicación» o «X es Y» en etiqueta y detalle para el esquema local. */
-function splitIdea(sentence: string): MindPoint {
+export function splitIdea(sentence: string): MindPoint {
   const s = sentence.replace(/\s+/g, " ").trim();
   const colon = s.indexOf(":");
   if (colon > 2 && colon < 50) return { label: clip(s.slice(0, colon), 60), detail: clip(s.slice(colon + 1), 160) };

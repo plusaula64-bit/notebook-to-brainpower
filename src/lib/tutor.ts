@@ -79,6 +79,12 @@ export function tutorReply(question: string, notes: string, subject: string): st
   return `¡Buena pregunta! 🌱 Todavía no tengo información sobre "${question.trim().slice(0, 80)}" en las fuentes de este cuaderno.\n\n${WEB_OFFER}`;
 }
 
+/** Explicación breve de la base local clásica (temas escolares frecuentes), o null. */
+export function basicTopicText(question: string): string | null {
+  const q = norm(question);
+  return topics.find((t) => t.keys.some((k) => q.includes(k)))?.text ?? null;
+}
+
 export const WEB_OFFER = "¿Te gustaría que realice una búsqueda en la web sobre este tema para darte la respuesta?";
 
 /** Preguntas de seguimiento sugeridas al final de cada respuesta. */
