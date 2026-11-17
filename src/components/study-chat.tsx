@@ -15,7 +15,10 @@ import {
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Button } from "@/components/ui/button";
 import type { Notebook } from "@/lib/aulaplus";
-import { tutorReply, followUps, webSearchMany, formatWebAnswer, WEB_OFFER } from "@/lib/tutor";
+import { webSearchMany, formatWebAnswer, followUps } from "@/lib/tutor";
+import { miloReply } from "@/lib/milo/engine";
+import { studyMaterial } from "@/lib/study-ai";
+import { aiPaused, isOnline, pauseAi } from "@/lib/ai-availability";
 import { readStudyFile } from "@/lib/file-reader";
 import mascot from "@/assets/pet-cloud.png";
 import { loadChat, saveChat } from "@/lib/local-store";
@@ -37,12 +40,38 @@ export function StudyChat({ notebook, addNotes, userName = "" }: { notebook: Not
   };
   const first = userName.split(" ")[0] ?? "";
 
+  /** Muestra la respuesta poco a poco, como si Milo la escribiera en ese momento. */
+  async function typeOut(base: ChatMsg[], id: string, text: string, chips: string[]) {
+    const parts = text.split(/(\s+)/);
+    setMessages([...base, { id, role: "assistant", text: "" }]);
+    for (let i = 0; i < parts.length; i += 8) {
+      const shown = parts.slice(0, i + 8).join("");
+      setMessages((list) => list.map((m) => (m.id === id ? { ...m, text: shown } : m)));
+      await new Promise((r) => setTimeout(r, 18));
+    }
+    push([...base, { id, role: "assistant", text, chips }]);
+  }
+
+  /** Motor interno de Milo: responde siempre, con o sin internet y sin depender de créditos de IA. */
+  async function answerWithMilo(text: string, base: ChatMsg[]) {
+    const material = studyMaterial(notebook);
+    let r = miloReply(text, material, notebook.name, first);
+    if (r.needsWeb && isOnline()) {
+      setThinking(true);
+      const hits = await webSearchMany(text, 3);
+      if (hits.length) r = { text: `${formatWebAnswer(text, hits)}\n\n### Para repasar\nResume con tus palabras la idea principal y anótala en tus apuntes.`, chips: r.chips };
+    }
+    setThinking(false);
+    await typeOut(base, crypto.randomUUID(), r.text, r.chips);
+  }
+
   async function ask(text: string) {
     if (!text.trim() || thinking) return;
     const withUser = [...messages, { id: crypto.randomUUID(), role: "user" as const, text }];
     push(withUser);
     setLastQuestion(text);
     setThinking(true);
+    if (!isOnline() || aiPaused()) return answerWithMilo(text, withUser);
     try {
       const res = await fetch("/api/public/tutor", {
         method: "POST",
@@ -54,28 +83,28 @@ export function StudyChat({ notebook, addNotes, userName = "" }: { notebook: Not
           history: messages.slice(-10).map((m) => ({ role: m.role, text: m.text })),
         }),
       });
+      if (res.status === 402) pauseAi(15 * 60_000);
+      if (res.status === 429) pauseAi(60_000);
       if (!res.ok || !res.body) throw new Error(`tutor ${res.status}`);
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       const id = crypto.randomUUID();
       let reply = "";
-      push([...withUser, { id, role: "assistant", text: "…" }]);
-      setThinking(false);
+      let shown = false;
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         reply += decoder.decode(value, { stream: true });
+        if (!reply.trim()) continue;
+        if (!shown) { shown = true; setThinking(false); setMessages([...withUser, { id, role: "assistant", text: reply }]); }
         const current = reply;
         setMessages((list) => list.map((m) => (m.id === id ? { ...m, text: current } : m)));
       }
-      push([...withUser, { id, role: "assistant", text: reply, chips: followUps(text, notebook.name) }]);
+      // Respuesta vacía = la IA externa falló a mitad (p. ej. sin créditos): responde Milo.
+      if (!reply.trim()) { pauseAi(5 * 60_000); throw new Error("respuesta vacía"); }
+      push([...withUser, { id, role: "assistant", text: reply, chips: miloReply(text, "", notebook.name).chips }]);
     } catch {
-      // Respaldo local si la IA no está disponible
-      let reply = tutorReply(text, notebook.notes, notebook.name);
-      if (first && /^¡Hola!/.test(reply)) reply = reply.replace("¡Hola!", `¡Hola, ${first}!`);
-      const offer = reply.includes(WEB_OFFER);
-      push([...withUser, { id: crypto.randomUUID(), role: "assistant", text: reply, chips: offer ? [] : followUps(text, notebook.name), ...(offer ? { webQuery: text } : {}) }]);
-      setThinking(false);
+      await answerWithMilo(text, withUser);
     }
   }
 

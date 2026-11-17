@@ -48,3 +48,4 @@
 - [ ] Probar el inicio de sesión con Google y la copia en la nube con una cuenta real (necesita a la usuaria)
 - [x] PWA offline definitiva: arreglado el service worker publicado (no se instalaba), copia de la app guardada para abrir sin red, datos en IndexedDB protegidos
 - [ ] Comprobar en el celular la app publicada sin internet (necesita publicar)
+- [x] Milo responde siempre: motor interno con biblioteca académica para chat, resúmenes, esquema de llaves y flashcards cuando la IA externa no está disponible; sin avisos de créditos

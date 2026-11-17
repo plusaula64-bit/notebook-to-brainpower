@@ -1,27 +1,28 @@
-// Flashcards generadas por IA a partir del cuaderno (con mazo local sin conexión).
+// Flashcards generadas por IA a partir del cuaderno; si la IA no está disponible, las crea Milo.
 import { useState } from "react";
 import { Check, ChevronLeft, ChevronRight, Lightbulb, RotateCcw, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import type { Notebook } from "@/lib/aulaplus";
-import { FLASHCARD_LABELS, localFlashcards } from "@/lib/study-ai";
+import { FLASHCARD_LABELS } from "@/lib/study-ai";
+import { miloFlashcards } from "@/lib/milo/engine";
 import { AiStatus, useStudyAi } from "./ai-study";
 
 export function AiFlashcards({ notebook: n, update }: { notebook: Notebook; update: (n: Notebook) => void }) {
   const ai = useStudyAi(n, update, "flashcards", true);
   const [flipped, setFlipped] = useState(false);
   const [hintFor, setHintFor] = useState<number | null>(null);
-  const fromAi = Boolean(ai.aiValue?.length);
-  const cards = fromAi ? ai.aiValue! : localFlashcards(n.name, ai.material);
+  const ready = Boolean(ai.aiValue?.length);
+  const cards = ready ? ai.aiValue! : miloFlashcards(n.name, ai.material);
 
-  if (ai.loading && !fromAi) return <div className="ai-loading"><Shimmer>Milo está creando tus flashcards…</Shimmer></div>;
+  if (ai.loading && !ready) return <div className="ai-loading"><Shimmer>Milo está creando tus flashcards…</Shimmer></div>;
   if (!cards.length)
     return (
       <div className="tools-empty">
         <h3>Aún no hay tarjetas</h3>
-        <p className="text-muted-foreground">Añade apuntes o fuentes al cuaderno. Con internet, la IA también puede crear tarjetas a partir del tema.</p>
-        <Button onClick={() => void ai.generate()}><Sparkles />Crear flashcards con IA</Button>
+        <p className="text-muted-foreground">Añade apuntes o fuentes al cuaderno y Milo creará tus tarjetas.</p>
+        <Button onClick={() => void ai.generate()}><Sparkles />Crear flashcards</Button>
       </div>
     );
 
@@ -46,7 +47,7 @@ export function AiFlashcards({ notebook: n, update }: { notebook: Notebook; upda
 
   return (
     <div className="flash-studio">
-      <AiStatus fromAi={fromAi} fresh={ai.fresh} loading={ai.loading} failed={ai.failed} onGenerate={() => void ai.generate()} label="Crear con IA" regenerateLabel="Nuevo mazo con IA" />
+      <AiStatus engine={ai.engine} ready={ready} fresh={ai.fresh} loading={ai.loading} onGenerate={() => void ai.generate()} label="Crear mazo" regenerateLabel="Nuevo mazo" />
       <div className="flash-meta">
         <span className="pill lilac">Tarjeta {cur + 1} de {cards.length}</span>
         <span className="pill mint"><Check size={14} />Lo sé: {known.length}</span>

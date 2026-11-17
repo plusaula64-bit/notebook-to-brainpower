@@ -15,9 +15,9 @@ import {
 import { basicTopicText, followUps, keyTerms, sentences, solveMath, summarize, webSearchMany } from "@/lib/tutor";
 
 export const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-const cap = (s: string) => (s ? s[0]!.toUpperCase() + s.slice(1) : s);
-const lowerFirst = (s: string) => (s ? s[0]!.toLowerCase() + s.slice(1) : s);
-const dot = (s: string) => (/[.!?…»)]$/.test(s.trim()) ? s.trim() : `${s.trim()}.`);
+const cap = (s = "") => (s ? s[0]!.toUpperCase() + s.slice(1) : s);
+const lowerFirst = (s = "") => (s ? s[0]!.toLowerCase() + s.slice(1) : s);
+const dot = (s = "") => (/[.!?…»)]$/.test(s.trim()) ? s.trim() : `${s.trim()}.`);
 const clip = (s: string, max: number) => {
   const t = s.replace(/\s+/g, " ").trim();
   return t.length > max ? `${t.slice(0, max - 1).replace(/\s+\S*$/, "")}…` : t;
@@ -352,7 +352,7 @@ export type MiloReply = { text: string; chips: string[]; needsWeb?: boolean };
 
 const STOP = new Set(
   norm(
-    "que como cual cuales para por sobre entre explica explicame dime define definir definicion significa significado quiero saber puedes podrias ayudame tema cosa cosas tiene tienen sirve esta este estos estas donde cuando porque mucho bien hola gracias favor sobre acerca seria cuenta cuentame habla hablame exploramos principales importante funciona hace hacen";
+    "que como cual cuales para por sobre entre explica explicame dime define definir definicion significa significado quiero saber puedes podrias ayudame tema cosa cosas tiene tienen sirve esta este estos estas donde cuando porque mucho bien hola gracias favor sobre acerca seria cuenta cuentame habla hablame exploramos principales importante funciona hace hacen",
   ).split(" "),
 );
 const stem = (w: string) => (w.length > 5 && w.endsWith("es") ? w.slice(0, -2) : w.length > 4 && w.endsWith("s") ? w.slice(0, -1) : w);
@@ -369,7 +369,7 @@ function findFocus(tokens: string[], list: Topic[], bonus?: Topic | null): Focus
   for (const topic of list) {
     const extra = bonus && topic.id === bonus.id ? 1 : 0;
     for (const branch of topic.branches) {
-      const bs = matchCount(tokens, branch.label) * 3;
+      const bs = matchCount(tokens, branch.label) * 5;
       if (bs && (!best || bs + extra > best.score)) best = { topic, branch, score: bs + extra };
       for (const point of branch.points) {
         const ps = matchCount(tokens, point.label) * 4;
