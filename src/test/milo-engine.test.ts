@@ -125,3 +125,20 @@ describe("pausa de la IA externa", () => {
     resumeAi();
   });
 });
+
+describe("Estudio+ y Autoevaluación con Milo", () => {
+  it("el cuestionario de un cuaderno sin apuntes tiene 5 preguntas con la respuesta entre 4 opciones", async () => {
+    const { miloQuiz } = await import("@/lib/milo/engine");
+    const quiz = miloQuiz("Sistema digestivo", "");
+    expect(quiz).toHaveLength(5);
+    for (const q of quiz) {
+      expect(q.options).toHaveLength(4);
+      expect(q.options).toContain(q.answer);
+    }
+  });
+  it("el audio y la tabla nunca quedan vacíos", async () => {
+    const { miloAudioLines, miloTable } = await import("@/lib/milo/engine");
+    expect(miloAudioLines("Incas", "").length).toBeGreaterThanOrEqual(3);
+    expect(miloTable("Incas", "").length).toBeGreaterThanOrEqual(4);
+  });
+});

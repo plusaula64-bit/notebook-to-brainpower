@@ -3,7 +3,8 @@ import { Network, ListChecks, Table2, Volume2, Pause, Play, Check, X, RotateCcw,
 import { Button } from "@/components/ui/button";
 import type { Notebook, Wallet, SessionFeeling } from "@/lib/aulaplus";
 import { sessionReward, nextReviewDays } from "@/lib/aulaplus";
-import { makeQuiz, dataTable, summarize } from "@/lib/tutor";
+import { studyMaterial } from "@/lib/study-ai";
+import { miloAudioLines, miloQuiz, miloTable, toolsMaterial } from "@/lib/milo/engine";
 import { Coins, Smile, Meh, Frown } from "lucide-react";
 import { toast } from "sonner";
 import mascot from "@/assets/pet-cloud.png";
@@ -78,14 +79,13 @@ export function StudyTools({ notebook, update, wallet, onWalletChange, only }: {
   const [picked, setPicked] = useState<Record<string, string>>(studio.quiz ?? {});
   const save = (patch: Partial<NonNullable<Notebook["studio"]>>) => update?.({ ...notebook, studio: { ...studio, ...patch } });
   const setTool = (t: Tool) => { setToolState(t); save({ tool: t }); };
-  const text = notebook.notes;
+  // Apuntes + fuentes + resumen ya generado; si no alcanza, Milo completa con su biblioteca del tema.
+  const text = toolsMaterial(studyMaterial(notebook), [studio.ai?.summary?.markdown, studio.ai?.notes?.markdown]);
   if (tool === "map")
     return <div className="study-tools">{!only && <ToolSwitch tool={tool} setTool={setTool} />}<AiMindMapView notebook={notebook} update={update} /></div>;
-  if (text.trim().length < 40)
-    return <div className="tools-empty"><h3>Primero agrega fuentes o apuntes</h3><p className="text-muted-foreground">Añade un enlace o texto en Fuentes, o sube un archivo en el chat, para generar audio, mapas mentales y cuestionarios.</p></div>;
-  const quiz = makeQuiz(text);
-  const table = dataTable(text);
-  const summary = summarize(text, 5);
+  const quiz = miloQuiz(notebook.name, text);
+  const table = miloTable(notebook.name, text);
+  const summary = miloAudioLines(notebook.name, text);
   const pick = (i: number, o: string) => { const next = { ...picked, [i]: o }; setPicked(next); save({ quiz: next }); };
   const score = quiz.filter((q, i) => picked[i] === q.answer).length;
   return (

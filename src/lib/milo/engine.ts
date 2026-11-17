@@ -14,8 +14,10 @@ import {
 } from "@/lib/study-ai";
 import {
   basicTopicText,
+  dataTable,
   followUps,
   keyTerms,
+  makeQuiz,
   sentences,
   solveMath,
   summarize,
@@ -811,4 +813,85 @@ export function miloReply(
       "Cuando tengas internet, vuelve a preguntarme y buscaré la información por ti 🌐.",
     ].join("\n"),
   };
+}
+
+// ---------- Estudio+ y Autoevaluación (audio, cuestionario, tabla) ----------
+const stripMd = (md: string) =>
+  md
+    .split("\n")
+    .map((l) =>
+      l
+        .replace(/^#+\s*/, "")
+        .replace(/^\s*(?:[-*]|\d+\.)\s+/, "")
+        .replace(/[*_]/g, "")
+        .trim(),
+    )
+    .filter((l) => l.length > 0)
+    .map((l) => dot(l))
+    .join("\n");
+
+/** Material para las herramientas: apuntes, fuentes y el resumen o los apuntes ya generados (IA o Milo). */
+export function toolsMaterial(material: string, generated: (string | undefined)[] = []) {
+  return joinText(material, ...generated.filter((g): g is string => Boolean(g)).map(stripMd));
+}
+
+export type MiloQuizItem = { question: string; options: string[]; answer: string };
+
+export function miloQuiz(topic: string, material: string, count = 5): MiloQuizItem[] {
+  const own = makeQuiz(material, count);
+  if (own.length >= 3) return own;
+  const t = findTopic(topic, material);
+  const branches: MindBranch[] = t ? t.branches : frameworkBranches(topic);
+  const all = branches.flatMap((b) => b.points.map((p) => ({ b, p })));
+  const labels = all.map((x) => x.p.label);
+  const rand = mulberry32(7);
+  const extra = shuffle(all, rand)
+    .slice(0, count - own.length)
+    .map(({ b, p }) => {
+      const near = b.points.map((x) => x.label).filter((l) => l !== p.label);
+      const far = shuffle(
+        labels.filter((l) => l !== p.label && !near.includes(l)),
+        rand,
+      );
+      const options = [p.label, ...[...near, ...far].slice(0, 3)].sort((a, c) =>
+        a.localeCompare(c),
+      );
+      return {
+        question: `¿Qué concepto corresponde a esta descripción? «${dot(cap(p.detail))}»`,
+        options,
+        answer: p.label,
+      };
+    });
+  return [...own, ...extra];
+}
+
+export function miloAudioLines(topic: string, material: string) {
+  const own = summarize(material, 5);
+  if (own.length >= 3) return own;
+  const t = findTopic(topic, material);
+  if (!t) return [...own, ...frameworkBranches(topic).map((b) => `${b.label}: ${dot(b.summary)}`)];
+  return [
+    stripMd(t.intro).split("\n")[0]!,
+    ...t.branches.map(
+      (b) =>
+        `${b.label}: ${lowerFirst(b.summary)}. Incluye ${b.points.map((p) => p.label.toLowerCase()).join(", ")}.`,
+    ),
+    ...own,
+  ];
+}
+
+export function miloTable(topic: string, material: string) {
+  const own = dataTable(material).filter((r) => r.context);
+  if (own.length >= 4) return own;
+  const t = findTopic(topic, material);
+  const points = (t ? t.branches : frameworkBranches(topic)).flatMap((b) => b.points);
+  const text = norm(material);
+  const rows = points
+    .slice(0, 10)
+    .map((p) => ({
+      term: p.label,
+      count: Math.max(1, hits(text, norm(p.label))),
+      context: dot(cap(p.detail)),
+    }));
+  return [...own, ...rows.filter((r) => !own.some((o) => norm(o.term) === norm(r.term)))];
 }
