@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { findTopic, miloFlashcards, miloMindMap, miloNotes, miloReply, miloSummary } from "@/lib/milo/engine";
+import {
+  findTopic,
+  miloFlashcards,
+  miloMindMap,
+  miloNotes,
+  miloReply,
+  miloSummary,
+} from "@/lib/milo/engine";
 import { TOPICS } from "@/lib/milo/knowledge";
 import { aiPaused, pauseAi, resumeAi } from "@/lib/ai-availability";
 
@@ -7,7 +14,8 @@ describe("biblioteca de Milo", () => {
   it("cada tema tiene al menos 3 apartados con 2 o más ideas", () => {
     for (const t of TOPICS) {
       expect(t.branches.length, t.id).toBeGreaterThanOrEqual(3);
-      for (const b of t.branches) expect(b.points.length, `${t.id} · ${b.label}`).toBeGreaterThanOrEqual(2);
+      for (const b of t.branches)
+        expect(b.points.length, `${t.id} · ${b.label}`).toBeGreaterThanOrEqual(2);
     }
   });
 
@@ -26,17 +34,29 @@ describe("contenido de estudio sin IA externa", () => {
   });
 
   it("añade una rama con los apuntes del estudiante cuando existen", () => {
-    const map = miloMindMap("Anatomía", "La histología estudia los tejidos del cuerpo humano. El fémur es el hueso más largo.");
+    const map = miloMindMap(
+      "Anatomía",
+      "La histología estudia los tejidos del cuerpo humano. El fémur es el hueso más largo.",
+    );
     expect(map.branches.at(-1)?.label).toBe("Tus apuntes");
   });
 
   it("el resumen tiene todas las secciones de estudio", () => {
     const md = miloSummary("Fotosíntesis", "");
-    for (const h of ["## Idea central", "## Conceptos clave", "## Esquema lógico", "## Ejemplo práctico", "## Para recordar", "## Pregunta de repaso"]) expect(md).toContain(h);
+    for (const h of [
+      "## Idea central",
+      "## Conceptos clave",
+      "## Esquema lógico",
+      "## Ejemplo práctico",
+      "## Para recordar",
+      "## Pregunta de repaso",
+    ])
+      expect(md).toContain(h);
   });
 
   it("con un tema desconocido usa los apuntes del cuaderno", () => {
-    const notes = "La termodinámica estudia el calor y la energía. La entropía mide el desorden de un sistema. La entropía siempre aumenta en un sistema aislado.";
+    const notes =
+      "La termodinámica estudia el calor y la energía. La entropía mide el desorden de un sistema. La entropía siempre aumenta en un sistema aislado.";
     expect(miloSummary("Termo", notes)).toMatch(/entrop/i);
     expect(miloNotes("Termo", notes)).toContain("## Preguntas de autoestudio");
   });
@@ -55,7 +75,13 @@ describe("flashcards de Milo", () => {
 
   it("un mazo nuevo no repite las preguntas del anterior", () => {
     const first = miloFlashcards("Revolución Francesa", "", "", [], 1);
-    const next = miloFlashcards("Revolución Francesa", "", "", first.map((c) => c.question), 2);
+    const next = miloFlashcards(
+      "Revolución Francesa",
+      "",
+      "",
+      first.map((c) => c.question),
+      2,
+    );
     const before = new Set(first.map((c) => c.question));
     expect(next.filter((c) => before.has(c.question))).toHaveLength(0);
   });
@@ -76,7 +102,11 @@ describe("tutor Milo", () => {
   });
 
   it("usa los apuntes cuando el tema no está en la biblioteca", () => {
-    const r = miloReply("¿Qué es la entropía?", "La entropía mide el desorden de un sistema físico.", "Termo");
+    const r = miloReply(
+      "¿Qué es la entropía?",
+      "La entropía mide el desorden de un sistema físico.",
+      "Termo",
+    );
     expect(r.text).toMatch(/desorden/);
     expect(r.needsWeb).toBeFalsy();
   });

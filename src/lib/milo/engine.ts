@@ -12,9 +12,21 @@ import {
   type MindPoint,
   type StudyAiResult,
 } from "@/lib/study-ai";
-import { basicTopicText, followUps, keyTerms, sentences, solveMath, summarize, webSearchMany } from "@/lib/tutor";
+import {
+  basicTopicText,
+  followUps,
+  keyTerms,
+  sentences,
+  solveMath,
+  summarize,
+  webSearchMany,
+} from "@/lib/tutor";
 
-export const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+export const norm = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 const cap = (s = "") => (s ? s[0]!.toUpperCase() + s.slice(1) : s);
 const lowerFirst = (s = "") => (s ? s[0]!.toLowerCase() + s.slice(1) : s);
 const dot = (s = "") => (/[.!?…»)]$/.test(s.trim()) ? s.trim() : `${s.trim()}.`);
@@ -23,7 +35,11 @@ const clip = (s: string, max: number) => {
   return t.length > max ? `${t.slice(0, max - 1).replace(/\s+\S*$/, "")}…` : t;
 };
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-const joinText = (...parts: string[]) => parts.map((p) => p.trim()).filter(Boolean).join("\n\n");
+const joinText = (...parts: string[]) =>
+  parts
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .join("\n\n");
 
 function hits(text: string, key: string) {
   return (text.match(new RegExp(`(^|[^a-z0-9])${escapeRe(key)}`, "g")) ?? []).length;
@@ -49,32 +65,67 @@ export function findTopic(primary: string, secondary = ""): Topic | null {
   return bestScore >= 6 ? best : null;
 }
 
-const plainBranch = (b: TopicBranch): MindBranch => ({ label: b.label, summary: b.summary, points: b.points.map((p) => ({ ...p })) });
+const plainBranch = (b: TopicBranch): MindBranch => ({
+  label: b.label,
+  summary: b.summary,
+  points: b.points.map((p) => ({ ...p })),
+});
 
 function notesBranch(material: string): MindBranch | null {
   const ideas = summarize(material, 3);
   if (!ideas.length) return null;
-  return { label: "Tus apuntes", summary: "Ideas clave que anotaste sobre este tema", points: ideas.map(splitIdea) };
+  return {
+    label: "Tus apuntes",
+    summary: "Ideas clave que anotaste sobre este tema",
+    points: ideas.map(splitIdea),
+  };
 }
 
 function frameworkBranches(topic: string): MindBranch[] {
   return [
-    { label: "Concepto", summary: `Qué es ${topic} y qué abarca`, points: [
-      { label: "Definición", detail: `Explica qué es ${topic} usando sus términos técnicos`, items: ["Palabras clave", "Ejemplo propio"] },
-      { label: "Objeto de estudio", detail: "Delimita qué hechos, fenómenos o elementos incluye" },
-    ] },
-    { label: "Componentes", summary: "Partes, tipos o elementos que lo forman", points: [
-      { label: "Clasificación", detail: "Agrupa los elementos según un criterio claro", items: ["Tipos", "Partes"] },
-      { label: "Características", detail: "Rasgos que distinguen a cada elemento" },
-    ] },
-    { label: "Procesos y relaciones", summary: "Cómo funciona y cómo se conectan sus partes", points: [
-      { label: "Etapas", detail: "Orden en que ocurren los procesos o los hechos" },
-      { label: "Causas y efectos", detail: "Qué lo provoca y qué consecuencias tiene" },
-    ] },
-    { label: "Aplicaciones", summary: `Dónde aparece ${topic} en la vida real`, points: [
-      { label: "Ejemplos", detail: "Casos concretos de tu entorno" },
-      { label: "Conexiones", detail: "Relación con otras asignaturas" },
-    ] },
+    {
+      label: "Concepto",
+      summary: `Qué es ${topic} y qué abarca`,
+      points: [
+        {
+          label: "Definición",
+          detail: `Explica qué es ${topic} usando sus términos técnicos`,
+          items: ["Palabras clave", "Ejemplo propio"],
+        },
+        {
+          label: "Objeto de estudio",
+          detail: "Delimita qué hechos, fenómenos o elementos incluye",
+        },
+      ],
+    },
+    {
+      label: "Componentes",
+      summary: "Partes, tipos o elementos que lo forman",
+      points: [
+        {
+          label: "Clasificación",
+          detail: "Agrupa los elementos según un criterio claro",
+          items: ["Tipos", "Partes"],
+        },
+        { label: "Características", detail: "Rasgos que distinguen a cada elemento" },
+      ],
+    },
+    {
+      label: "Procesos y relaciones",
+      summary: "Cómo funciona y cómo se conectan sus partes",
+      points: [
+        { label: "Etapas", detail: "Orden en que ocurren los procesos o los hechos" },
+        { label: "Causas y efectos", detail: "Qué lo provoca y qué consecuencias tiene" },
+      ],
+    },
+    {
+      label: "Aplicaciones",
+      summary: `Dónde aparece ${topic} en la vida real`,
+      points: [
+        { label: "Ejemplos", detail: "Casos concretos de tu entorno" },
+        { label: "Conexiones", detail: "Relación con otras asignaturas" },
+      ],
+    },
   ];
 }
 
@@ -95,7 +146,9 @@ export function miloMindMap(topic: string, material: string, extra = ""): AiMind
 // ---------- Resumen ----------
 function interleavePoints(t: Topic, max: number) {
   const out: { b: TopicBranch; p: MindPoint }[] = [];
-  for (let i = 0; out.length < max && i < 4; i++) for (const b of t.branches) if (b.points[i] && out.length < max) out.push({ b, p: b.points[i]! });
+  for (let i = 0; out.length < max && i < 4; i++)
+    for (const b of t.branches)
+      if (b.points[i] && out.length < max) out.push({ b, p: b.points[i]! });
   return out;
 }
 
@@ -107,15 +160,21 @@ function topicSummary(t: Topic, material: string) {
     "## Conceptos clave",
     ...interleavePoints(t, 6).map(({ p }) => `- **${p.label}:** ${dot(cap(p.detail))}`),
     "## Esquema lógico",
-    ...t.branches.map((b, i) => [
-      `${i + 1}. **${b.label}:** ${dot(b.summary)}`,
-      ...b.points.map((p) => `   - ${p.label}${p.items?.length ? ` (${p.items.slice(0, 2).join(", ")})` : ""}`),
-    ].join("\n")),
+    ...t.branches.map((b, i) =>
+      [
+        `${i + 1}. **${b.label}:** ${dot(b.summary)}`,
+        ...b.points.map(
+          (p) => `   - ${p.label}${p.items?.length ? ` (${p.items.slice(0, 2).join(", ")})` : ""}`,
+        ),
+      ].join("\n"),
+    ),
     ...(mine.length ? ["## Desde tus apuntes", ...mine.map((s) => `- ${clip(s, 220)}`)] : []),
     "## Ejemplo práctico",
     t.example,
     "## Para recordar",
-    ...t.branches.slice(0, 3).map((b) => `- **${b.label}:** ${b.points.map((p) => p.label).join(" · ")}`),
+    ...t.branches
+      .slice(0, 3)
+      .map((b) => `- **${b.label}:** ${b.points.map((p) => p.label).join(" · ")}`),
     "## Pregunta de repaso",
     t.question,
   ].join("\n");
@@ -130,19 +189,25 @@ function textSummary(topic: string, text: string) {
   const example = all.find((s) => /por ejemplo|ejemplo|como cuando|se observa|se usa/i.test(s));
   return [
     "## Idea central",
-    summarize(text, 2).map((s) => clip(s, 220)).join(" "),
+    summarize(text, 2)
+      .map((s) => clip(s, 220))
+      .join(" "),
     "## Conceptos clave",
     ...terms
       .map((t) => ({ t, s: all.find((x) => x.toLowerCase().includes(t)) }))
       .filter((c) => c.s)
       .map((c) => `- **${cap(c.t)}:** ${clip(c.s!, 170)}`),
     "## Esquema lógico",
-    ...map.branches.map((br, i) => [
-      `${i + 1}. **${br.label}:** ${clip(br.summary, 160)}`,
-      ...br.points.map((p) => `   - ${p.detail ? `${p.label}: ${p.detail}` : p.label}`),
-    ].join("\n")),
+    ...map.branches.map((br, i) =>
+      [
+        `${i + 1}. **${br.label}:** ${clip(br.summary, 160)}`,
+        ...br.points.map((p) => `   - ${p.detail ? `${p.label}: ${p.detail}` : p.label}`),
+      ].join("\n"),
+    ),
     "## Ejemplo práctico",
-    example ? clip(example, 260) : `Piensa en una situación de tu vida diaria donde intervenga **${a}**: describe qué ocurre y qué papel cumple **${b}** en ella.`,
+    example
+      ? clip(example, 260)
+      : `Piensa en una situación de tu vida diaria donde intervenga **${a}**: describe qué ocurre y qué papel cumple **${b}** en ella.`,
     "## Para recordar",
     ...map.branches.slice(0, 3).map((br) => `- **${br.label}:** ${clip(br.summary, 90)}`),
     "## Pregunta de repaso",
@@ -157,7 +222,10 @@ function frameworkSummary(topic: string) {
     "## Conceptos clave",
     ...frameworkBranches(topic).map((b) => `- **${b.label}:** ${dot(b.summary)}`),
     "## Esquema lógico",
-    ...frameworkBranches(topic).map((b, i) => `${i + 1}. **${b.label}**\n${b.points.map((p) => `   - ${p.label}: ${p.detail}`).join("\n")}`),
+    ...frameworkBranches(topic).map(
+      (b, i) =>
+        `${i + 1}. **${b.label}**\n${b.points.map((p) => `   - ${p.label}: ${p.detail}`).join("\n")}`,
+    ),
     "## Ejemplo práctico",
     `Explica ${topic} a un compañero en dos minutos usando un ejemplo de tu vida diaria; si te trabas, ahí está lo que debes repasar.`,
     "## Para recordar",
@@ -185,15 +253,25 @@ export function miloNotes(topic: string, material: string, extra = "") {
     const sections = t.branches.flatMap((b, i) => [
       `## ${i + 1}. ${b.label}`,
       `- ${dot(b.summary)}`,
-      ...b.points.map((p) => `  - **${p.label}:** ${dot(cap(p.detail))}${p.items?.length ? ` _Ej.: ${p.items.join(", ")}._` : ""}`),
+      ...b.points.map(
+        (p) =>
+          `  - **${p.label}:** ${dot(cap(p.detail))}${p.items?.length ? ` _Ej.: ${p.items.join(", ")}._` : ""}`,
+      ),
     ]);
-    if (mine.length) sections.push(`## ${t.branches.length + 1}. Desde tus apuntes`, ...mine.map((s) => `- ${clip(s, 220)}`));
+    if (mine.length)
+      sections.push(
+        `## ${t.branches.length + 1}. Desde tus apuntes`,
+        ...mine.map((s) => `- ${clip(s, 220)}`),
+      );
     const [b0, b1] = t.branches;
     return [
       `# ${t.title}`,
       ...sections,
       "## Palabras clave",
-      t.branches.flatMap((b) => b.points.map((p) => `**${p.label}**`)).slice(0, 10).join(" · "),
+      t.branches
+        .flatMap((b) => b.points.map((p) => `**${p.label}**`))
+        .slice(0, 10)
+        .join(" · "),
       "## Resumen en 3 líneas",
       `- ${t.intro.split(/(?<=\.)\s+/)[0]}`,
       ...t.branches.slice(0, 2).map((b) => `- **${b.label}:** ${dot(b.summary)}`),
@@ -205,7 +283,8 @@ export function miloNotes(topic: string, material: string, extra = "") {
   }
   const text = joinText(material, extra);
   let map = localMindMap(topic, text);
-  if (map.branches.length < 2) map = { center: topic, branches: [...map.branches, ...frameworkBranches(topic)].slice(0, 6) };
+  if (map.branches.length < 2)
+    map = { center: topic, branches: [...map.branches, ...frameworkBranches(topic)].slice(0, 6) };
   const terms = keyTerms(text, 8);
   const lines = summarize(text, 3);
   return [
@@ -216,9 +295,13 @@ export function miloNotes(topic: string, material: string, extra = "") {
       ...b.points.map((p) => `  - ${p.detail ? `**${p.label}:** ${dot(p.detail)}` : dot(p.label)}`),
     ]),
     "## Palabras clave",
-    (terms.length ? terms.map(cap) : map.branches.map((b) => b.label)).map((x) => `**${x}**`).join(" · "),
+    (terms.length ? terms.map(cap) : map.branches.map((b) => b.label))
+      .map((x) => `**${x}**`)
+      .join(" · "),
     "## Resumen en 3 líneas",
-    ...(lines.length ? lines.map((s) => `- ${clip(s, 200)}`) : map.branches.slice(0, 3).map((b) => `- **${b.label}:** ${dot(b.summary)}`)),
+    ...(lines.length
+      ? lines.map((s) => `- ${clip(s, 200)}`)
+      : map.branches.slice(0, 3).map((b) => `- **${b.label}:** ${dot(b.summary)}`)),
     "## Preguntas de autoestudio",
     `1. ¿Qué es **${cap(terms[0] ?? map.branches[0]!.label)}** y por qué es importante en ${topic}?`,
     `2. ¿Cómo se relacionan **${cap(terms[1] ?? map.branches[1]?.label ?? topic)}** y **${cap(terms[2] ?? map.branches[0]!.label)}**?`,
@@ -250,7 +333,11 @@ function mixTypes(cards: AiFlashcard[], rand: () => number) {
   for (const c of cards) groups.set(c.type, [...(groups.get(c.type) ?? []), c]);
   const order = shuffle([...groups.keys()], rand);
   const out: AiFlashcard[] = [];
-  while (out.length < cards.length) for (const k of order) { const next = groups.get(k)!.shift(); if (next) out.push(next); }
+  while (out.length < cards.length)
+    for (const k of order) {
+      const next = groups.get(k)!.shift();
+      if (next) out.push(next);
+    }
   return out;
 }
 
@@ -279,58 +366,130 @@ export function topicCards(t: Topic): AiFlashcard[] {
         ][j % 3]!;
         cards.push({ type: "concepto", question, answer, hint: `Forma parte de «${b.label}».` });
       }
-      cards.push({ type: "completar", question: `Completa con el concepto correcto: _____ → ${dot(p.detail)}`, answer: p.label, hint: `Pertenece a «${b.label}» y empieza por «${p.label[0]}».` });
+      cards.push({
+        type: "completar",
+        question: `Completa con el concepto correcto: _____ → ${dot(p.detail)}`,
+        answer: p.label,
+        hint: `Pertenece a «${b.label}» y empieza por «${p.label[0]}».`,
+      });
       const other = b.points[(j + 1) % b.points.length];
       if (j % 2 === 1 && other && other !== p) {
-        cards.push({ type: "verdadero_falso", question: `¿Verdadero o falso? «${p.label}»: ${dot(other.detail)}`, answer: `Falso. Eso corresponde a «${other.label}». «${p.label}»: ${dot(p.detail)}` });
+        cards.push({
+          type: "verdadero_falso",
+          question: `¿Verdadero o falso? «${p.label}»: ${dot(other.detail)}`,
+          answer: `Falso. Eso corresponde a «${other.label}». «${p.label}»: ${dot(p.detail)}`,
+        });
       } else {
-        cards.push({ type: "verdadero_falso", question: `¿Verdadero o falso? «${p.label}»: ${dot(p.detail)}`, answer: `Verdadero. Forma parte de «${b.label}»: ${dot(lowerFirst(b.summary))}` });
+        cards.push({
+          type: "verdadero_falso",
+          question: `¿Verdadero o falso? «${p.label}»: ${dot(p.detail)}`,
+          answer: `Verdadero. Forma parte de «${b.label}»: ${dot(lowerFirst(b.summary))}`,
+        });
       }
       if (j === 0 && p.items?.length) {
-        cards.push({ type: "aplicacion", question: `Menciona un ejemplo concreto de «${p.label}» y explica por qué lo es.`, answer: `${p.items.join(", ")}. ${dot(cap(p.detail))}`, hint: `Recuerda qué define a «${p.label}».` });
+        cards.push({
+          type: "aplicacion",
+          question: `Menciona un ejemplo concreto de «${p.label}» y explica por qué lo es.`,
+          answer: `${p.items.join(", ")}. ${dot(cap(p.detail))}`,
+          hint: `Recuerda qué define a «${p.label}».`,
+        });
       }
     });
     for (let j = 0; j + 1 < b.points.length; j += 2) {
-      const A = b.points[j]!, B = b.points[j + 1]!;
-      cards.push({ type: "comparacion", question: `¿Qué diferencia hay entre «${A.label}» y «${B.label}»?`, answer: `«${A.label}»: ${dot(A.detail)} En cambio, «${B.label}»: ${dot(B.detail)}`, hint: `Ambos forman parte de «${b.label}».` });
+      const A = b.points[j]!,
+        B = b.points[j + 1]!;
+      cards.push({
+        type: "comparacion",
+        question: `¿Qué diferencia hay entre «${A.label}» y «${B.label}»?`,
+        answer: `«${A.label}»: ${dot(A.detail)} En cambio, «${B.label}»: ${dot(B.detail)}`,
+        hint: `Ambos forman parte de «${b.label}».`,
+      });
     }
     if (b.ordered && b.points.length >= 3) {
       const labels = b.points.map((p) => p.label);
-      cards.push({ type: "proceso", question: `Ordena correctamente (${b.label}): ${[...labels].reverse().join(" · ")}`, answer: labels.join(" → "), hint: `Empieza por «${labels[0]}».` });
+      cards.push({
+        type: "proceso",
+        question: `Ordena correctamente (${b.label}): ${[...labels].reverse().join(" · ")}`,
+        answer: labels.join(" → "),
+        hint: `Empieza por «${labels[0]}».`,
+      });
       b.points.slice(0, -1).forEach((p, j) => {
         const next = b.points[j + 1]!;
-        cards.push({ type: "proceso", question: `En «${b.label}», ¿qué viene después de «${p.label}»?`, answer: `«${next.label}»: ${dot(next.detail)}` });
+        cards.push({
+          type: "proceso",
+          question: `En «${b.label}», ¿qué viene después de «${p.label}»?`,
+          answer: `«${next.label}»: ${dot(next.detail)}`,
+        });
       });
     }
   });
-  for (const [q, a] of t.apply) cards.push({ type: "aplicacion", question: q, answer: a, hint: `Usa lo que sabes de ${title}.` });
+  for (const [q, a] of t.apply)
+    cards.push({
+      type: "aplicacion",
+      question: q,
+      answer: a,
+      hint: `Usa lo que sabes de ${title}.`,
+    });
   return cards;
 }
 
 function frameworkCards(topic: string): AiFlashcard[] {
   return frameworkBranches(topic).flatMap((b) => [
-    { type: "concepto" as const, question: `¿Qué debes poder explicar sobre «${b.label}» de ${topic}?`, answer: `${dot(b.summary)} ${b.points.map((p) => `${p.label}: ${dot(p.detail)}`).join(" ")}` },
-    { type: "aplicacion" as const, question: `Da un ejemplo propio relacionado con «${b.label}» de ${topic}.`, answer: `Un buen ejemplo muestra ${lowerFirst(b.summary)}. Compáralo con tus apuntes o fuentes para comprobarlo.` },
+    {
+      type: "concepto" as const,
+      question: `¿Qué debes poder explicar sobre «${b.label}» de ${topic}?`,
+      answer: `${dot(b.summary)} ${b.points.map((p) => `${p.label}: ${dot(p.detail)}`).join(" ")}`,
+    },
+    {
+      type: "aplicacion" as const,
+      question: `Da un ejemplo propio relacionado con «${b.label}» de ${topic}.`,
+      answer: `Un buen ejemplo muestra ${lowerFirst(b.summary)}. Compáralo con tus apuntes o fuentes para comprobarlo.`,
+    },
   ]);
 }
 
-export function miloFlashcards(topic: string, material: string, extra = "", exclude: string[] = [], seed = 1): AiFlashcard[] {
+export function miloFlashcards(
+  topic: string,
+  material: string,
+  extra = "",
+  exclude: string[] = [],
+  seed = 1,
+): AiFlashcard[] {
   const t = findTopic(topic, material);
-  let pool = [...(t ? topicCards(t) : []), ...localFlashcards(t?.title ?? topic, joinText(material, extra))];
+  let pool = [
+    ...(t ? topicCards(t) : []),
+    ...localFlashcards(t?.title ?? topic, joinText(material, extra)),
+  ];
   if (pool.length < 6) pool = [...pool, ...frameworkCards(topic)];
   const seen = new Set<string>();
-  pool = pool.filter((c) => { const k = norm(c.question).trim(); if (seen.has(k)) return false; seen.add(k); return true; });
+  pool = pool.filter((c) => {
+    const k = norm(c.question).trim();
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
   const rand = mulberry32(seed);
   const ex = new Set(exclude.map((q) => norm(q).trim()));
   const fresh = pool.filter((c) => !ex.has(norm(c.question).trim()));
   const used = pool.filter((c) => ex.has(norm(c.question).trim()));
-  return [...mixTypes(shuffle(fresh, rand), rand), ...mixTypes(shuffle(used, rand), rand)].slice(0, 14);
+  return [...mixTypes(shuffle(fresh, rand), rand), ...mixTypes(shuffle(used, rand), rand)].slice(
+    0,
+    14,
+  );
 }
 
 // ---------- Generación completa (con fuentes web opcionales) ----------
-export function miloStudySync(kind: AiKind, topic: string, material: string, extra = "", exclude: string[] = [], seed = 1): StudyAiResult {
+export function miloStudySync(
+  kind: AiKind,
+  topic: string,
+  material: string,
+  extra = "",
+  exclude: string[] = [],
+  seed = 1,
+): StudyAiResult {
   if (kind === "mindmap") return { map: miloMindMap(topic, material, extra) };
-  if (kind === "flashcards") return { cards: miloFlashcards(topic, material, extra, exclude, seed) };
+  if (kind === "flashcards")
+    return { cards: miloFlashcards(topic, material, extra, exclude, seed) };
   if (kind === "summary") return { markdown: miloSummary(topic, material, extra) };
   return { markdown: miloNotes(topic, material, extra) };
 }
@@ -342,8 +501,16 @@ async function webText(topic: string) {
 }
 
 /** Si el tema no está en la biblioteca y hay pocos apuntes, con internet completa el material con Wikipedia. */
-export async function miloStudy(kind: AiKind, topic: string, material: string, opts: { exclude?: string[]; seed?: number; online?: boolean } = {}): Promise<StudyAiResult> {
-  const extra = opts.online && !findTopic(topic, material) && sentences(material).length < 3 ? await webText(topic) : "";
+export async function miloStudy(
+  kind: AiKind,
+  topic: string,
+  material: string,
+  opts: { exclude?: string[]; seed?: number; online?: boolean } = {},
+): Promise<StudyAiResult> {
+  const extra =
+    opts.online && !findTopic(topic, material) && sentences(material).length < 3
+      ? await webText(topic)
+      : "";
   return miloStudySync(kind, topic, material, extra, opts.exclude ?? [], opts.seed ?? Date.now());
 }
 
@@ -355,9 +522,16 @@ const STOP = new Set(
     "que como cual cuales para por sobre entre explica explicame dime define definir definicion significa significado quiero saber puedes podrias ayudame tema cosa cosas tiene tienen sirve esta este estos estas donde cuando porque mucho bien hola gracias favor sobre acerca seria cuenta cuentame habla hablame exploramos principales importante funciona hace hacen",
   ).split(" "),
 );
-const stem = (w: string) => (w.length > 5 && w.endsWith("es") ? w.slice(0, -2) : w.length > 4 && w.endsWith("s") ? w.slice(0, -1) : w);
-const words = (s: string) => (norm(s).match(/[a-z0-9]{4,}/g) ?? []).filter((w) => !STOP.has(w)).map(stem);
-const same = (a: string, b: string) => a === b || (Math.min(a.length, b.length) >= 5 && (a.startsWith(b) || b.startsWith(a)));
+const stem = (w: string) =>
+  w.length > 5 && w.endsWith("es")
+    ? w.slice(0, -2)
+    : w.length > 4 && w.endsWith("s")
+      ? w.slice(0, -1)
+      : w;
+const words = (s: string) =>
+  (norm(s).match(/[a-z0-9]{4,}/g) ?? []).filter((w) => !STOP.has(w)).map(stem);
+const same = (a: string, b: string) =>
+  a === b || (Math.min(a.length, b.length) >= 5 && (a.startsWith(b) || b.startsWith(a)));
 const matchCount = (tokens: string[], text: string) => {
   const ws = words(text);
   return tokens.filter((t) => ws.some((w) => same(t, w))).length;
@@ -375,7 +549,8 @@ function findFocus(tokens: string[], list: Topic[], bonus?: Topic | null): Focus
         const ps = matchCount(tokens, point.label) * 4;
         const item = (point.items ?? []).find((it) => matchCount(tokens, it) > 0);
         const score = ps + (item ? 2 : 0);
-        if (score && (!best || score + extra > best.score)) best = { topic, branch, point, ...(item && !ps ? { item } : {}), score: score + extra };
+        if (score && (!best || score + extra > best.score))
+          best = { topic, branch, point, ...(item && !ps ? { item } : {}), score: score + extra };
       }
     }
   }
@@ -384,7 +559,9 @@ function findFocus(tokens: string[], list: Topic[], bonus?: Topic | null): Focus
 
 function notesLine(tokens: string[], notes: string) {
   if (!tokens.length) return "";
-  const rel = sentences(notes).filter((s) => matchCount(tokens, s) > 0).slice(0, 2);
+  const rel = sentences(notes)
+    .filter((s) => matchCount(tokens, s) > 0)
+    .slice(0, 2);
   return rel.length ? `\n📒 **En tus apuntes:** _${rel.map((s) => clip(s, 200)).join(" ")}_` : "";
 }
 
@@ -395,10 +572,16 @@ function overviewAnswer(t: Topic, tokens: string[], notes: string) {
     t.intro,
     "",
     "### Lo esencial",
-    ...t.branches.map((b) => `- **${b.label}** — ${lowerFirst(b.summary)}: ${b.points.map((p) => p.label).join(", ")}.`),
+    ...t.branches.map(
+      (b) =>
+        `- **${b.label}** — ${lowerFirst(b.summary)}: ${b.points.map((p) => p.label).join(", ")}.`,
+    ),
     "",
     `### Profundicemos: ${b0.label}`,
-    ...b0.points.map((p) => `- **${p.label}:** ${dot(cap(p.detail))}${p.items?.length ? ` _Ej.: ${p.items.join(", ")}._` : ""}`),
+    ...b0.points.map(
+      (p) =>
+        `- **${p.label}:** ${dot(cap(p.detail))}${p.items?.length ? ` _Ej.: ${p.items.join(", ")}._` : ""}`,
+    ),
     "",
     "### Ejemplo práctico",
     t.example,
@@ -416,14 +599,19 @@ function branchAnswer(t: Topic, b: TopicBranch, tokens: string[], notes: string)
     `${dot(b.summary)}${b.ordered ? ` Sigue este orden: ${b.points.map((p) => `**${p.label}**`).join(" → ")}.` : ""}`,
     "",
     "### Ideas clave",
-    ...b.points.map((p, i) => `${i + 1}. **${p.label}:** ${dot(cap(p.detail))}${p.items?.length ? ` _Ej.: ${p.items.join(", ")}._` : ""}`),
+    ...b.points.map(
+      (p, i) =>
+        `${i + 1}. **${p.label}:** ${dot(cap(p.detail))}${p.items?.length ? ` _Ej.: ${p.items.join(", ")}._` : ""}`,
+    ),
     "",
     "### Ejemplo práctico",
     t.example,
     notesLine(tokens, notes),
     "",
     "### Para repasar",
-    p0 && p1 ? `¿Qué diferencia hay entre **${p0.label}** y **${p1.label}**? Explícalo con un ejemplo.` : t.question,
+    p0 && p1
+      ? `¿Qué diferencia hay entre **${p0.label}** y **${p1.label}**? Explícalo con un ejemplo.`
+      : t.question,
   ].join("\n");
 }
 
@@ -442,7 +630,13 @@ function pointAnswer(f: Focus, tokens: string[], notes: string) {
     `- **${p.label}:** ${dot(cap(p.detail))}`,
     ...(p.items?.length ? [`- **Ejemplos:** ${p.items.join(", ")}.`] : []),
     "",
-    ...(siblings.length ? ["### Cómo se relaciona con lo demás", ...siblings.map((s) => `- **${s.label}:** ${dot(cap(s.detail))}`), ""] : []),
+    ...(siblings.length
+      ? [
+          "### Cómo se relaciona con lo demás",
+          ...siblings.map((s) => `- **${s.label}:** ${dot(cap(s.detail))}`),
+          "",
+        ]
+      : []),
     "### Ejemplo práctico",
     apply ? `${apply[0]}\n\n**Respuesta:** ${apply[1]}` : t.example,
     notesLine(tokens, notes),
@@ -470,15 +664,26 @@ function practiceAnswer(title: string, notes: string) {
   ].join("\n");
 }
 
-const TIPS = "## Consejos para estudiar mejor 📚\n\n1. **Recuperación activa:** cierra el cuaderno y ponte a prueba con flashcards; es más eficaz que releer.\n2. **Repaso espaciado:** repasa hoy, mañana y en una semana.\n3. **Pomodoro:** 25 minutos de estudio y 5 de descanso.\n4. **Explícalo con tus palabras**, como si enseñaras a un amigo.\n5. **Duerme bien:** el cerebro consolida lo aprendido mientras descansas.\n6. Estudia con el celular lejos 📵.";
+const TIPS =
+  "## Consejos para estudiar mejor 📚\n\n1. **Recuperación activa:** cierra el cuaderno y ponte a prueba con flashcards; es más eficaz que releer.\n2. **Repaso espaciado:** repasa hoy, mañana y en una semana.\n3. **Pomodoro:** 25 minutos de estudio y 5 de descanso.\n4. **Explícalo con tus palabras**, como si enseñaras a un amigo.\n5. **Duerme bien:** el cerebro consolida lo aprendido mientras descansas.\n6. Estudia con el celular lejos 📵.";
 
 /** Respuesta del tutor sin IA externa: biblioteca académica + apuntes del cuaderno. */
-export function miloReply(question: string, notes: string, subject: string, firstName = ""): MiloReply {
+export function miloReply(
+  question: string,
+  notes: string,
+  subject: string,
+  firstName = "",
+): MiloReply {
   const q = norm(question.trim());
   const nbTopic = findTopic(subject, notes);
   if (!q) return { text: "¡Escríbeme tu duda y la resolvemos juntos! 😊", chips: [] };
   if (/^(hola|buenas|hey|buenos|holi)/.test(q) && q.length < 30) {
-    const ideas = nbTopic ? ` Por ejemplo: ${nbTopic.branches.slice(0, 3).map((b) => `**${lowerFirst(b.label)}**`).join(", ")}.` : "";
+    const ideas = nbTopic
+      ? ` Por ejemplo: ${nbTopic.branches
+          .slice(0, 3)
+          .map((b) => `**${lowerFirst(b.label)}**`)
+          .join(", ")}.`
+      : "";
     return {
       text: `¡Hola${firstName ? `, ${firstName}` : ""}! 👋 Soy **Milo**, tu tutor. Estoy listo para ayudarte con **${subject}**.${ideas}\n\nPuedo explicarte conceptos, resumir tus apuntes, hacerte preguntas de práctica o resolver ejercicios. ¿Por dónde empezamos?`,
       chips: nbTopic ? topicChips(nbTopic) : followUps(question, subject),
@@ -491,17 +696,41 @@ export function miloReply(question: string, notes: string, subject: string, firs
       chips: followUps(question, subject),
     };
   }
-  if (/consejo|tip|como estudiar|concentr|memoriz/.test(q)) return { text: TIPS, chips: ["Hazme una pregunta de práctica", `Resume ${subject}`] };
-  if (/^(gracias|muchas gracias)/.test(q)) return { text: "¡De nada! 💚 Sigue así: cada pregunta te acerca a dominar el tema.", chips: ["Hazme una pregunta de práctica"] };
+  if (/consejo|tip|como estudiar|concentr|memoriz/.test(q))
+    return { text: TIPS, chips: ["Hazme una pregunta de práctica", `Resume ${subject}`] };
+  if (/^(gracias|muchas gracias)/.test(q))
+    return {
+      text: "¡De nada! 💚 Sigue así: cada pregunta te acerca a dominar el tema.",
+      chips: ["Hazme una pregunta de práctica"],
+    };
 
   const qTopic = findTopic(question);
   const t = qTopic ?? nbTopic;
   const title = t?.title ?? subject;
-  if (/resum/.test(q)) return { text: `Aquí tienes un resumen de **${title}** 📚\n\n${miloSummary(qTopic ? qTopic.title : subject, notes)}`, chips: t ? topicChips(t) : followUps(question, subject) };
-  if (/esquema|mapa mental|organiza|ordena mis apuntes/.test(q)) return { text: miloNotes(qTopic ? qTopic.title : subject, notes), chips: t ? topicChips(t) : followUps(question, subject) };
-  if (/pregunta de practica|preguntas de practica|ponme a prueba|evaluame|examiname|quiz|practicar/.test(q)) return { text: practiceAnswer(title, notes), chips: ["Otra pregunta de práctica", t ? `Resume ${t.title}` : `Resume ${subject}`] };
+  if (/resum/.test(q))
+    return {
+      text: `Aquí tienes un resumen de **${title}** 📚\n\n${miloSummary(qTopic ? qTopic.title : subject, notes)}`,
+      chips: t ? topicChips(t) : followUps(question, subject),
+    };
+  if (/esquema|mapa mental|organiza|ordena mis apuntes/.test(q))
+    return {
+      text: miloNotes(qTopic ? qTopic.title : subject, notes),
+      chips: t ? topicChips(t) : followUps(question, subject),
+    };
+  if (
+    /pregunta de practica|preguntas de practica|ponme a prueba|evaluame|examiname|quiz|practicar/.test(
+      q,
+    )
+  )
+    return {
+      text: practiceAnswer(title, notes),
+      chips: ["Otra pregunta de práctica", t ? `Resume ${t.title}` : `Resume ${subject}`],
+    };
   if (t && /relaciona|otras areas|otras asignaturas|conecta/.test(q)) {
-    return { text: `## ${t.title} y otras áreas\n\n${t.links ?? AREA_LINKS[t.area]}\n\n### Para pensar\n¿En qué otra asignatura que llevas este año aparece algo de ${t.title}?`, chips: topicChips(t) };
+    return {
+      text: `## ${t.title} y otras áreas\n\n${t.links ?? AREA_LINKS[t.area]}\n\n### Para pensar\n¿En qué otra asignatura que llevas este año aparece algo de ${t.title}?`,
+      chips: topicChips(t),
+    };
   }
 
   let tokens = words(question);
@@ -509,18 +738,40 @@ export function miloReply(question: string, notes: string, subject: string, firs
     const titleWords = words(qTopic.title);
     tokens = tokens.filter((w) => !titleWords.some((tw) => same(w, tw)));
     const f = tokens.length ? findFocus(tokens, [qTopic]) : null;
-    if (f?.point) return { text: pointAnswer(f, tokens, notes), chips: topicChips(f.topic, f.branch) };
-    if (f) return { text: branchAnswer(f.topic, f.branch, tokens, notes), chips: topicChips(f.topic, f.branch) };
+    if (f?.point)
+      return { text: pointAnswer(f, tokens, notes), chips: topicChips(f.topic, f.branch) };
+    if (f)
+      return {
+        text: branchAnswer(f.topic, f.branch, tokens, notes),
+        chips: topicChips(f.topic, f.branch),
+      };
     return { text: overviewAnswer(qTopic, words(question), notes), chips: topicChips(qTopic) };
   }
-  const f = tokens.length ? findFocus(tokens, nbTopic ? [nbTopic, ...TOPICS.filter((x) => x !== nbTopic)] : TOPICS, nbTopic) : null;
-  if (f?.point) return { text: pointAnswer(f, tokens, notes), chips: topicChips(f.topic, f.branch) };
-  if (f) return { text: branchAnswer(f.topic, f.branch, tokens, notes), chips: topicChips(f.topic, f.branch) };
+  const f = tokens.length
+    ? findFocus(
+        tokens,
+        nbTopic ? [nbTopic, ...TOPICS.filter((x) => x !== nbTopic)] : TOPICS,
+        nbTopic,
+      )
+    : null;
+  if (f?.point)
+    return { text: pointAnswer(f, tokens, notes), chips: topicChips(f.topic, f.branch) };
+  if (f)
+    return {
+      text: branchAnswer(f.topic, f.branch, tokens, notes),
+      chips: topicChips(f.topic, f.branch),
+    };
 
   const basic = basicTopicText(question);
-  if (basic) return { text: `${basic}${notesLine(tokens, notes)}\n\n### Para repasar\nExplica esta idea con tus palabras y piensa en un ejemplo de tu vida diaria.`, chips: followUps(question, subject) };
+  if (basic)
+    return {
+      text: `${basic}${notesLine(tokens, notes)}\n\n### Para repasar\nExplica esta idea con tus palabras y piensa en un ejemplo de tu vida diaria.`,
+      chips: followUps(question, subject),
+    };
 
-  const rel = sentences(notes).filter((s) => matchCount(tokens, s) > 0).slice(0, 4);
+  const rel = sentences(notes)
+    .filter((s) => matchCount(tokens, s) > 0)
+    .slice(0, 4);
   if (rel.length) {
     const terms = keyTerms(rel.join(" "), 3).map(cap);
     return {
@@ -528,7 +779,10 @@ export function miloReply(question: string, notes: string, subject: string, firs
         `## ${cap(clip(question.replace(/[¿?]/g, ""), 70))}`,
         `Según tus apuntes de **${subject}**:`,
         "",
-        ...rel.map((s) => { const p = splitIdea(s); return p.detail ? `- **${p.label}:** ${p.detail}` : `- ${p.label}`; }),
+        ...rel.map((s) => {
+          const p = splitIdea(s);
+          return p.detail ? `- **${p.label}:** ${p.detail}` : `- ${p.label}`;
+        }),
         "",
         "### Cómo entenderlo mejor",
         terms.length >= 2

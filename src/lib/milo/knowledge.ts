@@ -19,17 +19,26 @@ export type Topic = {
 type Raw = Omit<Topic, "branches" | "apply"> & { map: string; apply?: [string, string][] };
 
 export const AREA_LINKS: Record<Area, string> = {
-  ciencias: "Se conecta con la **química** (las reacciones que ocurren en los seres vivos), la **física** (energía y movimiento), la **medicina** y la **ecología**. En la vida diaria aparece en la salud, la alimentación y el cuidado del ambiente.",
-  exactas: "Se conecta con la **física** y la **química** (fórmulas y cálculos), la **economía** (porcentajes, gráficos), la **informática** (algoritmos) y la **ingeniería**. En la vida diaria la usas al comprar, medir o planificar tu tiempo.",
-  sociales: "Se conecta con la **geografía** (dónde ocurrieron los hechos), la **economía** (recursos y comercio), la **literatura** de la época y la **educación cívica**. Te ayuda a entender las noticias y la sociedad actual.",
-  letras: "Se conecta con la **historia** (contexto de las obras), la **filosofía** (ideas), el **arte** y con **todas las asignaturas**, porque leer y escribir bien te permite comprender y explicar cualquier tema.",
-  humanidades: "Se conecta con la **historia**, la **psicología**, la **educación cívica** y la **ética** de la vida diaria. Te ayuda a argumentar mejor y a comprender a otras personas.",
+  ciencias:
+    "Se conecta con la **química** (las reacciones que ocurren en los seres vivos), la **física** (energía y movimiento), la **medicina** y la **ecología**. En la vida diaria aparece en la salud, la alimentación y el cuidado del ambiente.",
+  exactas:
+    "Se conecta con la **física** y la **química** (fórmulas y cálculos), la **economía** (porcentajes, gráficos), la **informática** (algoritmos) y la **ingeniería**. En la vida diaria la usas al comprar, medir o planificar tu tiempo.",
+  sociales:
+    "Se conecta con la **geografía** (dónde ocurrieron los hechos), la **economía** (recursos y comercio), la **literatura** de la época y la **educación cívica**. Te ayuda a entender las noticias y la sociedad actual.",
+  letras:
+    "Se conecta con la **historia** (contexto de las obras), la **filosofía** (ideas), el **arte** y con **todas las asignaturas**, porque leer y escribir bien te permite comprender y explicar cualquier tema.",
+  humanidades:
+    "Se conecta con la **historia**, la **psicología**, la **educación cívica** y la **ética** de la vida diaria. Te ayuda a argumentar mejor y a comprender a otras personas.",
 };
 
 const RAW: Raw[] = [
   {
-    id: "anatomia", keys: ["anatomia", "anatomico", "cuerpo humano"], title: "Anatomía humana", area: "ciencias",
-    intro: "La **anatomía** es la ciencia que estudia la estructura del cuerpo humano: la forma, la ubicación y la relación entre sus órganos y sistemas. Junto con la **fisiología**, que estudia cómo funcionan, es la base de la medicina y de las ciencias de la salud.",
+    id: "anatomia",
+    keys: ["anatomia", "anatomico", "cuerpo humano"],
+    title: "Anatomía humana",
+    area: "ciencias",
+    intro:
+      "La **anatomía** es la ciencia que estudia la estructura del cuerpo humano: la forma, la ubicación y la relación entre sus órganos y sistemas. Junto con la **fisiología**, que estudia cómo funcionan, es la base de la medicina y de las ciencias de la salud.",
     map: `
 # Ramas de la anatomía | Se divide según el enfoque y la escala con que se estudia el cuerpo
 - Anatomía descriptiva: estudia el cuerpo sistema por sistema > Osteología (huesos); Miología (músculos); Neuroanatomía
@@ -50,17 +59,30 @@ const RAW: Raw[] = [
 - Posición anatómica: es la postura de referencia, de pie, mirando al frente y con las palmas hacia adelante > Referencia universal
 - Planos anatómicos: son cortes imaginarios que dividen el cuerpo > Sagital (derecha e izquierda); Frontal (anterior y posterior); Transversal (superior e inferior)
 - Términos de dirección: describen la ubicación relativa de una estructura > Superior / inferior; Medial / lateral; Proximal / distal`,
-    example: "Cuando un médico dice que una herida está «en la cara anterior del antebrazo, en su tercio distal», usa la terminología anatómica: **anterior** es el lado de la palma (en posición anatómica) y **distal** significa más cerca de la muñeca que del codo.",
+    example:
+      "Cuando un médico dice que una herida está «en la cara anterior del antebrazo, en su tercio distal», usa la terminología anatómica: **anterior** es el lado de la palma (en posición anatómica) y **distal** significa más cerca de la muñeca que del codo.",
     apply: [
-      ["Un paciente siente dolor en la cara medial de la rodilla. ¿Hacia qué lado está el dolor?", "Hacia el lado interno de la rodilla, el más cercano a la línea media del cuerpo."],
-      ["Un estudiante observa al microscopio un corte de piel. ¿Qué rama de la anatomía está aplicando?", "La anatomía microscópica, en concreto la histología, porque estudia tejidos."],
+      [
+        "Un paciente siente dolor en la cara medial de la rodilla. ¿Hacia qué lado está el dolor?",
+        "Hacia el lado interno de la rodilla, el más cercano a la línea media del cuerpo.",
+      ],
+      [
+        "Un estudiante observa al microscopio un corte de piel. ¿Qué rama de la anatomía está aplicando?",
+        "La anatomía microscópica, en concreto la histología, porque estudia tejidos.",
+      ],
     ],
-    question: "¿Por qué la anatomía necesita una posición de referencia y planos universales para describir el cuerpo?",
-    links: "Se relaciona con la **fisiología** (cómo funciona cada estructura), la **biología celular** (células y tejidos), la **medicina** (diagnóstico y cirugía), la **educación física** (movimiento) y la **imagenología** (radiografías y tomografías).",
+    question:
+      "¿Por qué la anatomía necesita una posición de referencia y planos universales para describir el cuerpo?",
+    links:
+      "Se relaciona con la **fisiología** (cómo funciona cada estructura), la **biología celular** (células y tejidos), la **medicina** (diagnóstico y cirugía), la **educación física** (movimiento) y la **imagenología** (radiografías y tomografías).",
   },
   {
-    id: "biologia", keys: ["biologia", "seres vivos", "ciencias naturales"], title: "Biología", area: "ciencias",
-    intro: "La **biología** es la ciencia que estudia los seres vivos: su estructura, su funcionamiento, su evolución y sus relaciones con el ambiente.",
+    id: "biologia",
+    keys: ["biologia", "seres vivos", "ciencias naturales"],
+    title: "Biología",
+    area: "ciencias",
+    intro:
+      "La **biología** es la ciencia que estudia los seres vivos: su estructura, su funcionamiento, su evolución y sus relaciones con el ambiente.",
     map: `
 # Ramas de la biología | Cada rama se enfoca en un nivel o un grupo de seres vivos
 - Citología y genética: estudian la célula y la herencia > ADN; Genes
@@ -81,13 +103,24 @@ const RAW: Raw[] = [
 - Teoría celular: afirma que todos los seres vivos están formados por células que provienen de otras células > Schleiden y Schwann; Virchow
 - Evolución: explica que las especies cambian con el tiempo por selección natural > Darwin; Adaptación
 - Herencia: explica cómo los caracteres se transmiten de padres a hijos mediante genes > Mendel; Cromosomas`,
-    example: "Un champiñón no hace fotosíntesis: es **heterótrofo** y se alimenta descomponiendo materia orgánica. Por eso los hongos no se clasifican como plantas, aunque tampoco se desplacen.",
-    apply: [["Encuentras un organismo microscópico que se reproduce y se aleja de la luz. ¿Qué características de los seres vivos demuestra?", "Demuestra reproducción y relación (responde a un estímulo); además, como es un ser vivo, tiene organización celular."]],
-    question: "¿Por qué los virus generan debate sobre si son o no seres vivos? Usa las características de los seres vivos para responder.",
+    example:
+      "Un champiñón no hace fotosíntesis: es **heterótrofo** y se alimenta descomponiendo materia orgánica. Por eso los hongos no se clasifican como plantas, aunque tampoco se desplacen.",
+    apply: [
+      [
+        "Encuentras un organismo microscópico que se reproduce y se aleja de la luz. ¿Qué características de los seres vivos demuestra?",
+        "Demuestra reproducción y relación (responde a un estímulo); además, como es un ser vivo, tiene organización celular.",
+      ],
+    ],
+    question:
+      "¿Por qué los virus generan debate sobre si son o no seres vivos? Usa las características de los seres vivos para responder.",
   },
   {
-    id: "quimica", keys: ["quimica"], title: "Química", area: "exactas",
-    intro: "La **química** estudia la materia: su composición, su estructura, sus propiedades y las transformaciones que experimenta en las reacciones químicas.",
+    id: "quimica",
+    keys: ["quimica"],
+    title: "Química",
+    area: "exactas",
+    intro:
+      "La **química** estudia la materia: su composición, su estructura, sus propiedades y las transformaciones que experimenta en las reacciones químicas.",
     map: `
 # Ramas de la química | Se divide según el tipo de sustancias o el enfoque de estudio
 - Química orgánica: estudia los compuestos del carbono > Hidrocarburos; Biomoléculas
@@ -106,13 +139,24 @@ const RAW: Raw[] = [
 - Reactivos y productos: son las sustancias iniciales y las que se forman > A + B → C
 - Conservación de la masa: la masa total no cambia durante una reacción > Lavoisier; Balanceo
 - Tipos de reacción: pueden ser de síntesis, descomposición, sustitución o combustión > Oxidación; Neutralización`,
-    example: "Cuando un clavo se oxida, el hierro (Fe) reacciona con el oxígeno del aire y forma óxido de hierro: es una **reacción química**, porque aparece una sustancia nueva con propiedades distintas.",
-    apply: [["Disuelves sal en agua y luego evaporas el agua: recuperas la sal. ¿Fue un cambio físico o químico?", "Un cambio físico: la sal no se transformó en otra sustancia; solo se mezcló y se volvió a separar."]],
-    question: "¿Cómo demostrarías con un experimento sencillo que en una reacción química la masa se conserva?",
+    example:
+      "Cuando un clavo se oxida, el hierro (Fe) reacciona con el oxígeno del aire y forma óxido de hierro: es una **reacción química**, porque aparece una sustancia nueva con propiedades distintas.",
+    apply: [
+      [
+        "Disuelves sal en agua y luego evaporas el agua: recuperas la sal. ¿Fue un cambio físico o químico?",
+        "Un cambio físico: la sal no se transformó en otra sustancia; solo se mezcló y se volvió a separar.",
+      ],
+    ],
+    question:
+      "¿Cómo demostrarías con un experimento sencillo que en una reacción química la masa se conserva?",
   },
   {
-    id: "fisica", keys: ["fisica"], title: "Física", area: "exactas",
-    intro: "La **física** estudia la materia, la energía, el espacio y el tiempo, y las leyes que explican fenómenos como el movimiento, la luz, el calor o la electricidad.",
+    id: "fisica",
+    keys: ["fisica"],
+    title: "Física",
+    area: "exactas",
+    intro:
+      "La **física** estudia la materia, la energía, el espacio y el tiempo, y las leyes que explican fenómenos como el movimiento, la luz, el calor o la electricidad.",
     map: `
 # Ramas de la física | Cada rama estudia un tipo de fenómeno
 - Mecánica: estudia el movimiento y sus causas > Cinemática; Dinámica; Estática
@@ -131,13 +175,24 @@ const RAW: Raw[] = [
 - Energía cinética: es la energía del movimiento, Ec = ½ m v² > Auto en marcha
 - Energía potencial: es la energía por la posición, Ep = m g h > Agua en una represa
 - Conservación de la energía: la energía no se crea ni se destruye, se transforma > Cinética ↔ potencial`,
-    example: "Si dejas caer una pelota desde 2 m, su **energía potencial** (m · g · h) se transforma en **energía cinética** mientras cae: justo antes de tocar el suelo, casi toda su energía es de movimiento.",
-    apply: [["Un ciclista recorre 30 km en 1,5 h. ¿Cuál es su velocidad media?", "v = d / t = 30 km ÷ 1,5 h = 20 km/h."]],
-    question: "¿Por qué un astronauta en la Luna pesa menos pero tiene la misma masa que en la Tierra?",
+    example:
+      "Si dejas caer una pelota desde 2 m, su **energía potencial** (m · g · h) se transforma en **energía cinética** mientras cae: justo antes de tocar el suelo, casi toda su energía es de movimiento.",
+    apply: [
+      [
+        "Un ciclista recorre 30 km en 1,5 h. ¿Cuál es su velocidad media?",
+        "v = d / t = 30 km ÷ 1,5 h = 20 km/h.",
+      ],
+    ],
+    question:
+      "¿Por qué un astronauta en la Luna pesa menos pero tiene la misma masa que en la Tierra?",
   },
   {
-    id: "matematica", keys: ["matematica", "matematicas"], title: "Matemática", area: "exactas",
-    intro: "La **matemática** estudia los números, las formas, las cantidades y sus relaciones mediante el razonamiento lógico. Es la herramienta con la que se modelan y resuelven problemas en la ciencia, la tecnología y la vida diaria.",
+    id: "matematica",
+    keys: ["matematica", "matematicas"],
+    title: "Matemática",
+    area: "exactas",
+    intro:
+      "La **matemática** estudia los números, las formas, las cantidades y sus relaciones mediante el razonamiento lógico. Es la herramienta con la que se modelan y resuelven problemas en la ciencia, la tecnología y la vida diaria.",
     map: `
 # Ramas de la matemática | Cada rama estudia un tipo de objeto matemático
 - Aritmética: estudia los números y sus operaciones > Fracciones; Porcentajes
@@ -158,13 +213,24 @@ const RAW: Raw[] = [
 - Plantear: consiste en traducir el problema a una operación o ecuación > Definir la variable
 - Resolver: consiste en operar respetando las propiedades y la jerarquía de operaciones > Paréntesis primero
 - Comprobar: consiste en verificar que el resultado tenga sentido > Reemplazar el resultado`,
-    example: "Si un polo cuesta S/ 25 y tiene 20 % de descuento, calculas 25 × 20 ÷ 100 = 5; el precio final es 25 − 5 = **S/ 20**.",
-    apply: [["El triple de un número más 4 es 19. ¿Cuál es el número?", "Planteas 3x + 4 = 19 → 3x = 15 → x = 5."]],
-    question: "¿Por qué √2 no puede escribirse como una fracción exacta? ¿A qué conjunto numérico pertenece?",
+    example:
+      "Si un polo cuesta S/ 25 y tiene 20 % de descuento, calculas 25 × 20 ÷ 100 = 5; el precio final es 25 − 5 = **S/ 20**.",
+    apply: [
+      [
+        "El triple de un número más 4 es 19. ¿Cuál es el número?",
+        "Planteas 3x + 4 = 19 → 3x = 15 → x = 5.",
+      ],
+    ],
+    question:
+      "¿Por qué √2 no puede escribirse como una fracción exacta? ¿A qué conjunto numérico pertenece?",
   },
   {
-    id: "historia", keys: ["historia", "historico"], title: "Historia", area: "sociales",
-    intro: "La **historia** es la ciencia social que estudia el pasado de la humanidad a partir de fuentes, para comprender los cambios y las continuidades que explican el presente.",
+    id: "historia",
+    keys: ["historia", "historico"],
+    title: "Historia",
+    area: "sociales",
+    intro:
+      "La **historia** es la ciencia social que estudia el pasado de la humanidad a partir de fuentes, para comprender los cambios y las continuidades que explican el presente.",
     map: `
 #> Edades de la historia | Grandes periodos marcados por hechos clave
 - Prehistoria: va desde la aparición del ser humano hasta la invención de la escritura > Paleolítico; Neolítico
@@ -183,13 +249,24 @@ const RAW: Raw[] = [
 - Historia política: estudia gobiernos, guerras y Estados > Independencias
 - Historia económica y social: estudia el trabajo, el comercio y los grupos sociales > Clases sociales
 - Historia cultural: estudia las ideas, el arte, la religión y la vida cotidiana > Costumbres`,
-    example: "Una carta escrita por un soldado en 1824 sobre la batalla de Ayacucho es una **fuente primaria**; un libro de 2020 que analiza esa batalla es una **fuente secundaria**.",
-    apply: [["Encuentras un periódico de 1921 que narra el centenario de la independencia. ¿Qué tipo de fuente es para estudiar 1921?", "Una fuente primaria, porque se produjo en la misma época que se quiere estudiar."]],
-    question: "¿Por qué un mismo hecho histórico suele tener varias causas? Elige un ejemplo y explícalo.",
+    example:
+      "Una carta escrita por un soldado en 1824 sobre la batalla de Ayacucho es una **fuente primaria**; un libro de 2020 que analiza esa batalla es una **fuente secundaria**.",
+    apply: [
+      [
+        "Encuentras un periódico de 1921 que narra el centenario de la independencia. ¿Qué tipo de fuente es para estudiar 1921?",
+        "Una fuente primaria, porque se produjo en la misma época que se quiere estudiar.",
+      ],
+    ],
+    question:
+      "¿Por qué un mismo hecho histórico suele tener varias causas? Elige un ejemplo y explícalo.",
   },
   {
-    id: "psicologia", keys: ["psicologia", "conducta", "maslow", "piaget"], title: "Psicología", area: "humanidades",
-    intro: "La **psicología** es la ciencia que estudia la mente y el comportamiento: cómo pensamos, sentimos, aprendemos, recordamos y nos relacionamos.",
+    id: "psicologia",
+    keys: ["psicologia", "conducta", "maslow", "piaget"],
+    title: "Psicología",
+    area: "humanidades",
+    intro:
+      "La **psicología** es la ciencia que estudia la mente y el comportamiento: cómo pensamos, sentimos, aprendemos, recordamos y nos relacionamos.",
     map: `
 # Ramas de la psicología | Áreas de estudio y de aplicación
 - Psicología clínica: evalúa y trata trastornos y malestar psicológico > Terapia; Diagnóstico
@@ -210,13 +287,24 @@ const RAW: Raw[] = [
 - Seguridad y afiliación: incluyen la protección, la estabilidad, el amor y la pertenencia > Familia; Amigos
 - Reconocimiento: incluye la autoestima y el respeto de los demás > Logros
 - Autorrealización: consiste en desarrollar el propio potencial > Cima de la pirámide`,
-    example: "Si un perro saliva al escuchar la campana que antes anunciaba la comida, ocurre un **condicionamiento clásico** (Pavlov): el perro asoció un estímulo neutro con otro que provoca la respuesta.",
-    apply: [["Estudias más cuando tu profesora te felicita en público. ¿Qué corriente explica mejor este comportamiento?", "El conductismo: la felicitación funciona como refuerzo positivo que aumenta la conducta de estudiar."]],
-    question: "¿Por qué, según Maslow, a un estudiante con hambre le cuesta concentrarse en aprender?",
+    example:
+      "Si un perro saliva al escuchar la campana que antes anunciaba la comida, ocurre un **condicionamiento clásico** (Pavlov): el perro asoció un estímulo neutro con otro que provoca la respuesta.",
+    apply: [
+      [
+        "Estudias más cuando tu profesora te felicita en público. ¿Qué corriente explica mejor este comportamiento?",
+        "El conductismo: la felicitación funciona como refuerzo positivo que aumenta la conducta de estudiar.",
+      ],
+    ],
+    question:
+      "¿Por qué, según Maslow, a un estudiante con hambre le cuesta concentrarse en aprender?",
   },
   {
-    id: "lenguaje", keys: ["comunicacion", "lenguaje", "gramatica", "lengua", "castellano"], title: "Comunicación y lenguaje", area: "letras",
-    intro: "El curso de **Comunicación** estudia cómo usamos la lengua para expresarnos y comprender: los elementos de la comunicación, la gramática, la ortografía y los tipos de texto.",
+    id: "lenguaje",
+    keys: ["comunicacion", "lenguaje", "gramatica", "lengua", "castellano"],
+    title: "Comunicación y lenguaje",
+    area: "letras",
+    intro:
+      "El curso de **Comunicación** estudia cómo usamos la lengua para expresarnos y comprender: los elementos de la comunicación, la gramática, la ortografía y los tipos de texto.",
     map: `
 # Elementos de la comunicación | Componentes de todo acto comunicativo
 - Emisor y receptor: son quien envía y quien recibe el mensaje > Hablante; Oyente
@@ -234,13 +322,23 @@ const RAW: Raw[] = [
 - Texto narrativo: cuenta hechos con inicio, nudo y desenlace > Cuento; Novela
 - Texto expositivo: explica un tema de forma clara y objetiva > Enciclopedia; Libro escolar
 - Texto argumentativo: defiende una tesis con argumentos > Ensayo; Artículo de opinión`,
-    example: "En un chat, tú eres el **emisor**, tu amigo el **receptor**, el **canal** es el celular, el **código** es el español escrito y el **mensaje** es lo que le cuentas.",
-    apply: [["¿Por qué «examen» no lleva tilde pero «exámenes» sí?", "«Examen» es grave terminada en n (no lleva tilde); «exámenes» es esdrújula y las esdrújulas siempre llevan tilde."]],
+    example:
+      "En un chat, tú eres el **emisor**, tu amigo el **receptor**, el **canal** es el celular, el **código** es el español escrito y el **mensaje** es lo que le cuentas.",
+    apply: [
+      [
+        "¿Por qué «examen» no lleva tilde pero «exámenes» sí?",
+        "«Examen» es grave terminada en n (no lleva tilde); «exámenes» es esdrújula y las esdrújulas siempre llevan tilde.",
+      ],
+    ],
     question: "Escribe un mensaje breve e identifica en él los seis elementos de la comunicación.",
   },
   {
-    id: "literatura", keys: ["literatura", "literario", "generos literarios"], title: "Literatura", area: "letras",
-    intro: "La **literatura** es el arte que usa la palabra con intención estética para expresar ideas, emociones y visiones del mundo. Se estudia por géneros, movimientos, autores y recursos expresivos.",
+    id: "literatura",
+    keys: ["literatura", "literario", "generos literarios"],
+    title: "Literatura",
+    area: "letras",
+    intro:
+      "La **literatura** es el arte que usa la palabra con intención estética para expresar ideas, emociones y visiones del mundo. Se estudia por géneros, movimientos, autores y recursos expresivos.",
     map: `
 # Géneros literarios | Grandes formas de la expresión literaria
 - Género narrativo: relata hechos a través de un narrador > Cuento; Novela; Fábula
@@ -259,13 +357,24 @@ const RAW: Raw[] = [
 - Contexto: sitúa al autor, la época y el movimiento > Biografía; Momento histórico
 - Tema y estructura: identifican la idea principal y cómo se organiza la obra > Inicio, nudo y desenlace
 - Estilo: analiza los recursos, el narrador y el lenguaje > Figuras literarias`,
-    example: "En «Los heraldos negros», César Vallejo usa la **metáfora** de los «golpes» para expresar el dolor inexplicable de la vida: no habla de golpes físicos, sino de sufrimientos profundos.",
-    apply: [["Lees: «La ciudad dormía bajo la lluvia». ¿Qué recurso literario aparece?", "Una personificación: se atribuye a la ciudad una acción humana, dormir."]],
-    question: "¿Qué diferencia hay entre leer una novela como entretenimiento y analizarla literariamente?",
+    example:
+      "En «Los heraldos negros», César Vallejo usa la **metáfora** de los «golpes» para expresar el dolor inexplicable de la vida: no habla de golpes físicos, sino de sufrimientos profundos.",
+    apply: [
+      [
+        "Lees: «La ciudad dormía bajo la lluvia». ¿Qué recurso literario aparece?",
+        "Una personificación: se atribuye a la ciudad una acción humana, dormir.",
+      ],
+    ],
+    question:
+      "¿Qué diferencia hay entre leer una novela como entretenimiento y analizarla literariamente?",
   },
   {
-    id: "geografia", keys: ["geografia", "relieve", "clima", "mapa geografico"], title: "Geografía", area: "sociales",
-    intro: "La **geografía** estudia la superficie terrestre, sus paisajes y la relación entre la sociedad y el espacio donde vive.",
+    id: "geografia",
+    keys: ["geografia", "relieve", "clima", "mapa geografico"],
+    title: "Geografía",
+    area: "sociales",
+    intro:
+      "La **geografía** estudia la superficie terrestre, sus paisajes y la relación entre la sociedad y el espacio donde vive.",
     map: `
 # Ramas de la geografía | Se divide en física y humana
 - Geografía física: estudia el relieve, el clima, las aguas y los suelos > Geomorfología; Climatología; Hidrografía
@@ -283,13 +392,23 @@ const RAW: Raw[] = [
 - Latitud: es la distancia en grados al norte o al sur del ecuador > De 0° a 90°
 - Longitud: es la distancia en grados al este o al oeste de Greenwich > De 0° a 180°
 - Husos horarios: son franjas de 15° que comparten la misma hora > Perú: UTC −5`,
-    example: "La **corriente de Humboldt**, de aguas frías, explica que la costa peruana tenga pocas lluvias aunque esté cerca del ecuador: enfría el aire y dificulta que se formen nubes de lluvia.",
-    apply: [["Una ciudad está a 3400 m de altitud y otra al nivel del mar, en la misma latitud. ¿Cuál será más fría y por qué?", "La de 3400 m, porque la temperatura baja con la altitud (unos 0,6 °C cada 100 m)."]],
+    example:
+      "La **corriente de Humboldt**, de aguas frías, explica que la costa peruana tenga pocas lluvias aunque esté cerca del ecuador: enfría el aire y dificulta que se formen nubes de lluvia.",
+    apply: [
+      [
+        "Una ciudad está a 3400 m de altitud y otra al nivel del mar, en la misma latitud. ¿Cuál será más fría y por qué?",
+        "La de 3400 m, porque la temperatura baja con la altitud (unos 0,6 °C cada 100 m).",
+      ],
+    ],
     question: "¿Qué factores del clima explican que en Perú existan tantos climas distintos?",
   },
   {
-    id: "economia", keys: ["economia", "oferta", "demanda", "mercado"], title: "Economía", area: "sociales",
-    intro: "La **economía** estudia cómo las personas, las empresas y los países administran recursos escasos para satisfacer necesidades ilimitadas.",
+    id: "economia",
+    keys: ["economia", "oferta", "demanda", "mercado"],
+    title: "Economía",
+    area: "sociales",
+    intro:
+      "La **economía** estudia cómo las personas, las empresas y los países administran recursos escasos para satisfacer necesidades ilimitadas.",
     map: `
 # Conceptos básicos | Ideas que fundamentan la economía
 - Escasez: significa que los recursos son limitados frente a necesidades ilimitadas > Elegir implica renunciar
@@ -308,13 +427,24 @@ const RAW: Raw[] = [
 - Circulación: es el traslado e intercambio de los productos > Comercio; Transporte
 - Distribución: es el reparto de los ingresos generados > Salarios; Ganancias
 - Consumo: es el uso final de los bienes para satisfacer necesidades > Compras familiares`,
-    example: "Si sale una nueva consola y todos la quieren, la **demanda** sube; si hay pocas unidades, el precio aumenta hasta que la cantidad que la gente compra coincide con la que hay disponible.",
-    apply: [["Tienes S/ 50 y eliges ir al cine en vez de comprar un libro. ¿Cuál es tu costo de oportunidad?", "El libro al que renunciaste: era la mejor alternativa que dejaste de lado."]],
-    question: "¿Qué pasaría con el precio de las mascarillas si de pronto aumenta mucho su demanda y la oferta no cambia?",
+    example:
+      "Si sale una nueva consola y todos la quieren, la **demanda** sube; si hay pocas unidades, el precio aumenta hasta que la cantidad que la gente compra coincide con la que hay disponible.",
+    apply: [
+      [
+        "Tienes S/ 50 y eliges ir al cine en vez de comprar un libro. ¿Cuál es tu costo de oportunidad?",
+        "El libro al que renunciaste: era la mejor alternativa que dejaste de lado.",
+      ],
+    ],
+    question:
+      "¿Qué pasaría con el precio de las mascarillas si de pronto aumenta mucho su demanda y la oferta no cambia?",
   },
   {
-    id: "filosofia", keys: ["filosofia", "etica", "epistemologia"], title: "Filosofía", area: "humanidades",
-    intro: "La **filosofía** busca responder con razones las grandes preguntas sobre la realidad, el conocimiento, el ser humano, la moral y la sociedad.",
+    id: "filosofia",
+    keys: ["filosofia", "etica", "epistemologia"],
+    title: "Filosofía",
+    area: "humanidades",
+    intro:
+      "La **filosofía** busca responder con razones las grandes preguntas sobre la realidad, el conocimiento, el ser humano, la moral y la sociedad.",
     map: `
 # Disciplinas filosóficas | Áreas según la pregunta que plantean
 - Metafísica: se pregunta qué es la realidad y qué significa existir > Ser; Existencia
@@ -330,13 +460,23 @@ const RAW: Raw[] = [
 - Racionalismo: sostiene que el conocimiento procede de la razón > Descartes: «Pienso, luego existo»
 - Empirismo: sostiene que el conocimiento procede de la experiencia sensible > Locke; Hume
 - Criticismo: sostiene que el conocimiento une razón y experiencia > Kant`,
-    example: "Cuando debates si está bien copiar en un examen «porque todos lo hacen», estás haciendo **ética**: evalúas si una acción es correcta con argumentos, no solo por costumbre.",
-    apply: [["Un científico solo acepta lo que puede comprobar con experimentos. ¿Qué teoría del conocimiento se parece más a su postura?", "El empirismo, porque basa el conocimiento en la experiencia y la observación."]],
+    example:
+      "Cuando debates si está bien copiar en un examen «porque todos lo hacen», estás haciendo **ética**: evalúas si una acción es correcta con argumentos, no solo por costumbre.",
+    apply: [
+      [
+        "Un científico solo acepta lo que puede comprobar con experimentos. ¿Qué teoría del conocimiento se parece más a su postura?",
+        "El empirismo, porque basa el conocimiento en la experiencia y la observación.",
+      ],
+    ],
     question: "¿Puede una acción ser legal pero no ética? Argumenta con un ejemplo.",
   },
   {
-    id: "sistema-oseo", keys: ["sistema oseo", "esqueleto", "huesos", "hueso", "osteologia"], title: "Sistema óseo", area: "ciencias",
-    intro: "El **sistema óseo** es el conjunto de huesos, cartílagos y articulaciones que forman el esqueleto. En el adulto tiene **206 huesos** que sostienen, protegen y permiten el movimiento.",
+    id: "sistema-oseo",
+    keys: ["sistema oseo", "esqueleto", "huesos", "hueso", "osteologia"],
+    title: "Sistema óseo",
+    area: "ciencias",
+    intro:
+      "El **sistema óseo** es el conjunto de huesos, cartílagos y articulaciones que forman el esqueleto. En el adulto tiene **206 huesos** que sostienen, protegen y permiten el movimiento.",
     map: `
 # Funciones del esqueleto | Para qué sirven los huesos
 - Sostén: da forma y soporte a todo el cuerpo > Columna vertebral
@@ -356,13 +496,24 @@ const RAW: Raw[] = [
 - Sinartrosis: son articulaciones inmóviles > Suturas del cráneo
 - Anfiartrosis: son articulaciones semimóviles > Entre las vértebras
 - Diartrosis: son articulaciones móviles con líquido sinovial > Rodilla; Hombro`,
-    example: "Cuando alguien se fractura el brazo, el **húmero** (hueso largo) se repara formando hueso nuevo; por eso se inmoviliza con yeso: para mantener alineados los extremos mientras sana.",
-    apply: [["Un deportista se lesiona la rodilla y pierde amplitud de movimiento. ¿Qué tipo de articulación se afectó?", "Una diartrosis: la rodilla es una articulación móvil con líquido sinovial."]],
-    question: "¿Por qué el cráneo tiene articulaciones inmóviles mientras que el hombro tiene una muy móvil?",
+    example:
+      "Cuando alguien se fractura el brazo, el **húmero** (hueso largo) se repara formando hueso nuevo; por eso se inmoviliza con yeso: para mantener alineados los extremos mientras sana.",
+    apply: [
+      [
+        "Un deportista se lesiona la rodilla y pierde amplitud de movimiento. ¿Qué tipo de articulación se afectó?",
+        "Una diartrosis: la rodilla es una articulación móvil con líquido sinovial.",
+      ],
+    ],
+    question:
+      "¿Por qué el cráneo tiene articulaciones inmóviles mientras que el hombro tiene una muy móvil?",
   },
   {
-    id: "sistema-muscular", keys: ["sistema muscular", "musculos", "musculo", "miologia"], title: "Sistema muscular", area: "ciencias",
-    intro: "El **sistema muscular** está formado por más de **600 músculos** que, al contraerse, producen movimiento, mantienen la postura y generan calor.",
+    id: "sistema-muscular",
+    keys: ["sistema muscular", "musculos", "musculo", "miologia"],
+    title: "Sistema muscular",
+    area: "ciencias",
+    intro:
+      "El **sistema muscular** está formado por más de **600 músculos** que, al contraerse, producen movimiento, mantienen la postura y generan calor.",
     map: `
 # Tipos de músculo | Según su estructura y su control
 - Músculo esquelético: es estriado y voluntario, y se une a los huesos > Bíceps; Cuádriceps
@@ -381,13 +532,23 @@ const RAW: Raw[] = [
 - Músculo flexor: dobla una articulación > Bíceps (flexiona el codo)
 - Músculo extensor: estira una articulación > Tríceps (extiende el codo)
 - Tendones y ligamentos: el tendón une músculo con hueso y el ligamento une hueso con hueso > Tendón de Aquiles`,
-    example: "Al levantar una mochila, el **bíceps** se contrae (flexor) y el **tríceps** se relaja; para bajarla, el tríceps se contrae (extensor). Por eso se llaman músculos **antagonistas**.",
-    apply: [["¿Por qué no puedes detener voluntariamente los latidos de tu corazón?", "Porque el músculo cardíaco es involuntario: su contracción no depende de tu voluntad."]],
+    example:
+      "Al levantar una mochila, el **bíceps** se contrae (flexor) y el **tríceps** se relaja; para bajarla, el tríceps se contrae (extensor). Por eso se llaman músculos **antagonistas**.",
+    apply: [
+      [
+        "¿Por qué no puedes detener voluntariamente los latidos de tu corazón?",
+        "Porque el músculo cardíaco es involuntario: su contracción no depende de tu voluntad.",
+      ],
+    ],
     question: "¿Qué pasaría con el movimiento del codo si el tríceps no pudiera contraerse?",
   },
   {
-    id: "sistema-nervioso", keys: ["sistema nervioso", "neurona", "neuronas", "cerebro", "encefalo", "nervios"], title: "Sistema nervioso", area: "ciencias",
-    intro: "El **sistema nervioso** recibe información del entorno y del propio cuerpo, la procesa y coordina las respuestas. Su unidad funcional es la **neurona**.",
+    id: "sistema-nervioso",
+    keys: ["sistema nervioso", "neurona", "neuronas", "cerebro", "encefalo", "nervios"],
+    title: "Sistema nervioso",
+    area: "ciencias",
+    intro:
+      "El **sistema nervioso** recibe información del entorno y del propio cuerpo, la procesa y coordina las respuestas. Su unidad funcional es la **neurona**.",
     map: `
 # Divisiones | Organización del sistema nervioso
 - Sistema nervioso central: lo forman el encéfalo y la médula espinal, que procesan la información > Cerebro; Cerebelo; Tronco encefálico
@@ -407,13 +568,23 @@ const RAW: Raw[] = [
 - Neurona sensitiva: lleva la señal hasta la médula espinal > Vía aferente
 - Médula espinal: elabora la respuesta sin esperar al cerebro > Interneurona
 - Efector: es el músculo que ejecuta la respuesta > Retirar la mano`,
-    example: "Si tocas una olla caliente, retiras la mano antes de sentir dolor: es un **arco reflejo**, porque la médula espinal ordena la respuesta sin esperar a que el cerebro procese la información.",
-    apply: [["Una persona sufre una lesión en el cerebelo. ¿Qué dificultad tendrá probablemente?", "Problemas de equilibrio y de coordinación de los movimientos."]],
+    example:
+      "Si tocas una olla caliente, retiras la mano antes de sentir dolor: es un **arco reflejo**, porque la médula espinal ordena la respuesta sin esperar a que el cerebro procese la información.",
+    apply: [
+      [
+        "Una persona sufre una lesión en el cerebelo. ¿Qué dificultad tendrá probablemente?",
+        "Problemas de equilibrio y de coordinación de los movimientos.",
+      ],
+    ],
     question: "¿Por qué los actos reflejos son más rápidos que los movimientos voluntarios?",
   },
   {
-    id: "sistema-circulatorio", keys: ["sistema circulatorio", "circulatorio", "corazon", "sangre", "cardiovascular"], title: "Sistema circulatorio", area: "ciencias",
-    intro: "El **sistema circulatorio** transporta oxígeno, nutrientes, hormonas y desechos por todo el cuerpo. Está formado por el **corazón**, los **vasos sanguíneos** y la **sangre**.",
+    id: "sistema-circulatorio",
+    keys: ["sistema circulatorio", "circulatorio", "corazon", "sangre", "cardiovascular"],
+    title: "Sistema circulatorio",
+    area: "ciencias",
+    intro:
+      "El **sistema circulatorio** transporta oxígeno, nutrientes, hormonas y desechos por todo el cuerpo. Está formado por el **corazón**, los **vasos sanguíneos** y la **sangre**.",
     map: `
 # El corazón | Bomba muscular con cuatro cavidades
 - Aurículas: son las cavidades superiores que reciben la sangre > Aurícula derecha; Aurícula izquierda
@@ -430,13 +601,23 @@ const RAW: Raw[] = [
 - Plasma: es la parte líquida, con agua, sales y proteínas > 55 % de la sangre
 - Glóbulos rojos: transportan el oxígeno gracias a la hemoglobina > Eritrocitos
 - Glóbulos blancos y plaquetas: defienden el cuerpo y permiten la coagulación > Leucocitos; Plaquetas`,
-    example: "Cuando corres, el corazón late más rápido para que la **circulación mayor** lleve más oxígeno a los músculos, y respiras más para que la **circulación menor** recargue ese oxígeno en los pulmones.",
-    apply: [["Te haces un corte pequeño y la sangre deja de salir en unos minutos. ¿Qué componente de la sangre lo hizo posible?", "Las plaquetas, que participan en la coagulación."]],
+    example:
+      "Cuando corres, el corazón late más rápido para que la **circulación mayor** lleve más oxígeno a los músculos, y respiras más para que la **circulación menor** recargue ese oxígeno en los pulmones.",
+    apply: [
+      [
+        "Te haces un corte pequeño y la sangre deja de salir en unos minutos. ¿Qué componente de la sangre lo hizo posible?",
+        "Las plaquetas, que participan en la coagulación.",
+      ],
+    ],
     question: "¿Por qué la pared del ventrículo izquierdo es más gruesa que la del derecho?",
   },
   {
-    id: "sistema-digestivo", keys: ["sistema digestivo", "digestivo", "digestion", "estomago", "intestino"], title: "Sistema digestivo", area: "ciencias",
-    intro: "El **sistema digestivo** transforma los alimentos en nutrientes que el cuerpo puede absorber y elimina lo que no se aprovecha.",
+    id: "sistema-digestivo",
+    keys: ["sistema digestivo", "digestivo", "digestion", "estomago", "intestino"],
+    title: "Sistema digestivo",
+    area: "ciencias",
+    intro:
+      "El **sistema digestivo** transforma los alimentos en nutrientes que el cuerpo puede absorber y elimina lo que no se aprovecha.",
     map: `
 #> Recorrido del alimento | Órganos del tubo digestivo en orden
 - Boca: tritura el alimento e inicia la digestión del almidón con la saliva > Amilasa salival
@@ -452,13 +633,24 @@ const RAW: Raw[] = [
 - Digestión química: las enzimas rompen las moléculas grandes en otras pequeñas > Proteínas → aminoácidos
 - Absorción: los nutrientes pasan a la sangre > Intestino delgado
 - Egestión: expulsa los restos no digeridos > Heces`,
-    example: "Cuando masticas pan durante un rato, empieza a saber dulce: la **amilasa salival** está rompiendo el almidón en azúcares más simples. Es digestión química que empieza en la boca.",
-    apply: [["Una persona sin vesícula biliar debe comer con menos grasa. ¿Por qué?", "Porque la bilis, que ayuda a emulsionar las grasas, ya no se almacena ni se libera en cantidad suficiente al comer."]],
-    question: "¿Por qué el intestino delgado tiene millones de vellosidades? Relaciónalo con su función.",
+    example:
+      "Cuando masticas pan durante un rato, empieza a saber dulce: la **amilasa salival** está rompiendo el almidón en azúcares más simples. Es digestión química que empieza en la boca.",
+    apply: [
+      [
+        "Una persona sin vesícula biliar debe comer con menos grasa. ¿Por qué?",
+        "Porque la bilis, que ayuda a emulsionar las grasas, ya no se almacena ni se libera en cantidad suficiente al comer.",
+      ],
+    ],
+    question:
+      "¿Por qué el intestino delgado tiene millones de vellosidades? Relaciónalo con su función.",
   },
   {
-    id: "sistema-respiratorio", keys: ["sistema respiratorio", "respiratorio", "pulmones", "pulmon"], title: "Sistema respiratorio", area: "ciencias",
-    intro: "El **sistema respiratorio** permite el intercambio de gases: incorpora **oxígeno** del aire y elimina **dióxido de carbono**.",
+    id: "sistema-respiratorio",
+    keys: ["sistema respiratorio", "respiratorio", "pulmones", "pulmon"],
+    title: "Sistema respiratorio",
+    area: "ciencias",
+    intro:
+      "El **sistema respiratorio** permite el intercambio de gases: incorpora **oxígeno** del aire y elimina **dióxido de carbono**.",
     map: `
 #> Vías respiratorias | Recorrido del aire
 - Fosas nasales: filtran, calientan y humedecen el aire > Vellos; Moco
@@ -473,13 +665,24 @@ const RAW: Raw[] = [
 - Oxígeno: pasa del alvéolo a la sangre > Se une a la hemoglobina
 - Dióxido de carbono: pasa de la sangre al alvéolo para ser expulsado > Desecho celular
 - Respiración celular: las células usan el oxígeno para obtener energía > Mitocondrias`,
-    example: "Al subir a una ciudad de altura, respiras más rápido: el aire tiene menos presión de **oxígeno** y tu cuerpo compensa aumentando la **frecuencia respiratoria**.",
-    apply: [["¿Por qué es mejor respirar por la nariz que por la boca cuando hace frío?", "Porque las fosas nasales calientan, humedecen y filtran el aire antes de que llegue a los pulmones."]],
-    question: "¿Qué relación hay entre el sistema respiratorio y el circulatorio en el intercambio de gases?",
+    example:
+      "Al subir a una ciudad de altura, respiras más rápido: el aire tiene menos presión de **oxígeno** y tu cuerpo compensa aumentando la **frecuencia respiratoria**.",
+    apply: [
+      [
+        "¿Por qué es mejor respirar por la nariz que por la boca cuando hace frío?",
+        "Porque las fosas nasales calientan, humedecen y filtran el aire antes de que llegue a los pulmones.",
+      ],
+    ],
+    question:
+      "¿Qué relación hay entre el sistema respiratorio y el circulatorio en el intercambio de gases?",
   },
   {
-    id: "celula", keys: ["celula", "celulas", "citologia", "organelos"], title: "La célula", area: "ciencias",
-    intro: "La **célula** es la unidad estructural, funcional y de origen de todos los seres vivos. Puede ser un organismo completo (unicelular) o formar parte de uno pluricelular.",
+    id: "celula",
+    keys: ["celula", "celulas", "citologia", "organelos"],
+    title: "La célula",
+    area: "ciencias",
+    intro:
+      "La **célula** es la unidad estructural, funcional y de origen de todos los seres vivos. Puede ser un organismo completo (unicelular) o formar parte de uno pluricelular.",
     map: `
 # Tipos de célula | Según la presencia de núcleo
 - Célula procariota: no tiene núcleo definido y su ADN está libre en el citoplasma > Bacterias
@@ -498,13 +701,23 @@ const RAW: Raw[] = [
 - Unidad estructural: todos los seres vivos están formados por células > Schleiden y Schwann
 - Unidad funcional: en la célula ocurren las funciones vitales > Metabolismo
 - Unidad de origen: toda célula proviene de otra célula > Virchow`,
-    example: "Las células del músculo tienen muchísimas **mitocondrias** porque necesitan mucha energía para contraerse; en cambio, las células de la piel tienen menos.",
-    apply: [["Observas al microscopio una célula con pared celular y cloroplastos. ¿De qué tipo es?", "Es una célula vegetal (eucariota)."]],
+    example:
+      "Las células del músculo tienen muchísimas **mitocondrias** porque necesitan mucha energía para contraerse; en cambio, las células de la piel tienen menos.",
+    apply: [
+      [
+        "Observas al microscopio una célula con pared celular y cloroplastos. ¿De qué tipo es?",
+        "Es una célula vegetal (eucariota).",
+      ],
+    ],
     question: "¿Por qué una célula vegetal necesita cloroplastos y una animal no?",
   },
   {
-    id: "fotosintesis", keys: ["fotosintesis", "clorofila", "cloroplasto"], title: "Fotosíntesis", area: "ciencias",
-    intro: "La **fotosíntesis** es el proceso por el cual plantas, algas y algunas bacterias transforman la energía de la luz en energía química: fabrican **glucosa** y liberan **oxígeno**.",
+    id: "fotosintesis",
+    keys: ["fotosintesis", "clorofila", "cloroplasto"],
+    title: "Fotosíntesis",
+    area: "ciencias",
+    intro:
+      "La **fotosíntesis** es el proceso por el cual plantas, algas y algunas bacterias transforman la energía de la luz en energía química: fabrican **glucosa** y liberan **oxígeno**.",
     map: `
 # Lo que necesita la planta | Materias primas del proceso
 - Luz solar: es la fuente de energía y la capta la clorofila > Pigmento verde
@@ -521,13 +734,23 @@ const RAW: Raw[] = [
 - Base de las cadenas tróficas: los productores alimentan a todos los demás seres vivos > Herbívoros
 - Oxígeno atmosférico: mantiene la respiración de casi todos los seres vivos > Atmósfera
 - Regulación del clima: absorbe CO₂, un gas de efecto invernadero > Bosques; Fitoplancton`,
-    example: "Si cubres una hoja con papel aluminio durante varios días, esa zona se pone amarillenta: sin **luz** no hay fotosíntesis y la planta deja de fabricar glucosa y clorofila allí.",
-    apply: [["En un acuario con plantas aparecen burbujas en las hojas cuando les da el sol. ¿Qué gas es?", "Oxígeno, liberado en la fase luminosa de la fotosíntesis."]],
+    example:
+      "Si cubres una hoja con papel aluminio durante varios días, esa zona se pone amarillenta: sin **luz** no hay fotosíntesis y la planta deja de fabricar glucosa y clorofila allí.",
+    apply: [
+      [
+        "En un acuario con plantas aparecen burbujas en las hojas cuando les da el sol. ¿Qué gas es?",
+        "Oxígeno, liberado en la fase luminosa de la fotosíntesis.",
+      ],
+    ],
     question: "¿Por qué se dice que sin fotosíntesis no existirían los animales?",
   },
   {
-    id: "genetica", keys: ["genetica", "adn", "herencia", "mendel", "cromosomas", "genes"], title: "Genética y ADN", area: "ciencias",
-    intro: "La **genética** estudia la herencia biológica: cómo se transmiten las características de padres a hijos a través del **ADN** y los **genes**.",
+    id: "genetica",
+    keys: ["genetica", "adn", "herencia", "mendel", "cromosomas", "genes"],
+    title: "Genética y ADN",
+    area: "ciencias",
+    intro:
+      "La **genética** estudia la herencia biológica: cómo se transmiten las características de padres a hijos a través del **ADN** y los **genes**.",
     map: `
 # El ADN | Molécula de la herencia
 - Estructura del ADN: es una doble hélice formada por nucleótidos > Watson y Crick (1953)
@@ -546,13 +769,31 @@ const RAW: Raw[] = [
 - Alelo: es cada versión de un mismo gen > Dominante (A); Recesivo (a)
 - Genotipo y fenotipo: son la combinación genética y el rasgo visible > AA, Aa, aa
 - Mutación: es un cambio en el ADN que puede generar variabilidad > Motor de la evolución`,
-    example: "Dos padres con ojos marrones (Aa) pueden tener un hijo con ojos claros (aa): cada uno le transmite el **alelo recesivo**. Por eso hay una probabilidad de 1 en 4.",
-    apply: [["Cruzas una planta Aa con otra Aa. ¿Qué proporción de la descendencia mostrará el rasgo recesivo?", "Un 25 % (1 de cada 4), los que resulten aa."]],
-    question: "¿Por qué dos hermanos con los mismos padres no son genéticamente idénticos (salvo los gemelos)?",
+    example:
+      "Dos padres con ojos marrones (Aa) pueden tener un hijo con ojos claros (aa): cada uno le transmite el **alelo recesivo**. Por eso hay una probabilidad de 1 en 4.",
+    apply: [
+      [
+        "Cruzas una planta Aa con otra Aa. ¿Qué proporción de la descendencia mostrará el rasgo recesivo?",
+        "Un 25 % (1 de cada 4), los que resulten aa.",
+      ],
+    ],
+    question:
+      "¿Por qué dos hermanos con los mismos padres no son genéticamente idénticos (salvo los gemelos)?",
   },
   {
-    id: "ecosistema", keys: ["ecosistema", "ecosistemas", "ecologia", "cadena alimenticia", "cadena trofica", "biodiversidad"], title: "Ecosistemas", area: "ciencias",
-    intro: "Un **ecosistema** es el sistema formado por los seres vivos (**biocenosis**), el medio físico donde viven (**biotopo**) y las relaciones entre ellos.",
+    id: "ecosistema",
+    keys: [
+      "ecosistema",
+      "ecosistemas",
+      "ecologia",
+      "cadena alimenticia",
+      "cadena trofica",
+      "biodiversidad",
+    ],
+    title: "Ecosistemas",
+    area: "ciencias",
+    intro:
+      "Un **ecosistema** es el sistema formado por los seres vivos (**biocenosis**), el medio físico donde viven (**biotopo**) y las relaciones entre ellos.",
     map: `
 # Componentes | Factores del ecosistema
 - Factores bióticos: son los seres vivos del ecosistema > Plantas; Animales; Hongos
@@ -572,13 +813,24 @@ const RAW: Raw[] = [
 - Ecosistemas terrestres: incluyen bosques, desiertos y praderas > Selva amazónica
 - Ecosistemas acuáticos: pueden ser marinos o de agua dulce > Mar peruano; Lago Titicaca
 - Amenazas: son la deforestación, la contaminación y el cambio climático > Pérdida de biodiversidad`,
-    example: "En el mar peruano, el **fitoplancton** (productor) alimenta a la **anchoveta** (consumidor primario), que a su vez es alimento de aves guaneras y lobos marinos (consumidores secundarios).",
-    apply: [["Si desaparecen los zorros de un ecosistema, ¿qué pasará probablemente con la población de conejos?", "Aumentará al principio, porque pierde a su depredador, y luego podría agotar las plantas de las que se alimenta."]],
-    question: "¿Por qué los descomponedores son indispensables aunque no aparezcan en la parte alta de la cadena trófica?",
+    example:
+      "En el mar peruano, el **fitoplancton** (productor) alimenta a la **anchoveta** (consumidor primario), que a su vez es alimento de aves guaneras y lobos marinos (consumidores secundarios).",
+    apply: [
+      [
+        "Si desaparecen los zorros de un ecosistema, ¿qué pasará probablemente con la población de conejos?",
+        "Aumentará al principio, porque pierde a su depredador, y luego podría agotar las plantas de las que se alimenta.",
+      ],
+    ],
+    question:
+      "¿Por qué los descomponedores son indispensables aunque no aparezcan en la parte alta de la cadena trófica?",
   },
   {
-    id: "atomo", keys: ["atomo", "atomos", "tabla periodica", "modelo atomico", "electrones", "protones"], title: "El átomo y la tabla periódica", area: "exactas",
-    intro: "El **átomo** es la unidad más pequeña de un elemento químico que conserva sus propiedades. Tiene un **núcleo** con protones y neutrones, rodeado de **electrones**.",
+    id: "atomo",
+    keys: ["atomo", "atomos", "tabla periodica", "modelo atomico", "electrones", "protones"],
+    title: "El átomo y la tabla periódica",
+    area: "exactas",
+    intro:
+      "El **átomo** es la unidad más pequeña de un elemento químico que conserva sus propiedades. Tiene un **núcleo** con protones y neutrones, rodeado de **electrones**.",
     map: `
 # Partículas subatómicas | Componentes del átomo
 - Protones: tienen carga positiva y están en el núcleo > Definen el elemento
@@ -597,13 +849,24 @@ const RAW: Raw[] = [
 - Periodos: son las 7 filas horizontales e indican niveles de energía > Periodo 2: del Li al Ne
 - Grupos: son las 18 columnas con propiedades semejantes > Grupo 1: metales alcalinos
 - Familias de elementos: se distinguen metales, no metales y gases nobles > Sodio; Oxígeno; Neón`,
-    example: "El **carbono-14** es un isótopo que se desintegra lentamente; midiendo cuánto queda en un hueso antiguo, los arqueólogos calculan su edad (datación por radiocarbono).",
-    apply: [["Un átomo tiene 11 protones y 12 neutrones. ¿Cuál es su número atómico y su número másico?", "Z = 11 (es sodio) y A = 11 + 12 = 23."]],
-    question: "¿Por qué los elementos de un mismo grupo de la tabla periódica tienen propiedades parecidas?",
+    example:
+      "El **carbono-14** es un isótopo que se desintegra lentamente; midiendo cuánto queda en un hueso antiguo, los arqueólogos calculan su edad (datación por radiocarbono).",
+    apply: [
+      [
+        "Un átomo tiene 11 protones y 12 neutrones. ¿Cuál es su número atómico y su número másico?",
+        "Z = 11 (es sodio) y A = 11 + 12 = 23.",
+      ],
+    ],
+    question:
+      "¿Por qué los elementos de un mismo grupo de la tabla periódica tienen propiedades parecidas?",
   },
   {
-    id: "newton", keys: ["leyes de newton", "newton", "dinamica", "inercia", "fuerza", "fuerzas"], title: "Leyes de Newton", area: "exactas",
-    intro: "Las **leyes de Newton** (1687) explican la relación entre las fuerzas y el movimiento de los cuerpos. Son la base de la mecánica clásica.",
+    id: "newton",
+    keys: ["leyes de newton", "newton", "dinamica", "inercia", "fuerza", "fuerzas"],
+    title: "Leyes de Newton",
+    area: "exactas",
+    intro:
+      "Las **leyes de Newton** (1687) explican la relación entre las fuerzas y el movimiento de los cuerpos. Son la base de la mecánica clásica.",
     map: `
 #> Las tres leyes | Principios de la dinámica
 - Primera ley o inercia: un cuerpo mantiene su reposo o su movimiento uniforme si ninguna fuerza neta actúa sobre él > Frenazo del bus
@@ -618,13 +881,24 @@ const RAW: Raw[] = [
 - Masa: es la cantidad de materia y mide la inercia de un cuerpo > Kilogramo (kg)
 - Fuerza neta: es la suma vectorial de todas las fuerzas > Resultante
 - Diagrama de cuerpo libre: es el dibujo de todas las fuerzas que actúan sobre un cuerpo > Primer paso para resolver`,
-    example: "Cuando el bus frena de golpe, tu cuerpo se va hacia adelante: por **inercia** tiendes a seguir moviéndote a la velocidad que llevabas.",
-    apply: [["Empujas una caja de 10 kg con una fuerza neta de 20 N. ¿Cuál es su aceleración?", "a = F ÷ m = 20 N ÷ 10 kg = 2 m/s²."]],
-    question: "Si la Tierra te atrae con tu peso, ¿por qué tú también atraes a la Tierra según la tercera ley?",
+    example:
+      "Cuando el bus frena de golpe, tu cuerpo se va hacia adelante: por **inercia** tiendes a seguir moviéndote a la velocidad que llevabas.",
+    apply: [
+      [
+        "Empujas una caja de 10 kg con una fuerza neta de 20 N. ¿Cuál es su aceleración?",
+        "a = F ÷ m = 20 N ÷ 10 kg = 2 m/s².",
+      ],
+    ],
+    question:
+      "Si la Tierra te atrae con tu peso, ¿por qué tú también atraes a la Tierra según la tercera ley?",
   },
   {
-    id: "energia", keys: ["energia", "energias"], title: "La energía", area: "exactas",
-    intro: "La **energía** es la capacidad de un sistema para realizar trabajo o producir cambios. Se mide en **julios (J)** y se transforma constantemente.",
+    id: "energia",
+    keys: ["energia", "energias"],
+    title: "La energía",
+    area: "exactas",
+    intro:
+      "La **energía** es la capacidad de un sistema para realizar trabajo o producir cambios. Se mide en **julios (J)** y se transforma constantemente.",
     map: `
 # Formas de energía | Manifestaciones principales
 - Energía cinética: está asociada al movimiento, Ec = ½ m v² > Viento; Auto en marcha
@@ -642,13 +916,23 @@ const RAW: Raw[] = [
 # Trabajo y potencia | Magnitudes relacionadas
 - Trabajo: es la fuerza por la distancia recorrida en su dirección, W = F · d > Julio (J)
 - Potencia: es el trabajo realizado por unidad de tiempo, P = W / t > Vatio (W)`,
-    example: "Una central hidroeléctrica aprovecha la **energía potencial** del agua embalsada: al caer se vuelve **cinética**, mueve turbinas y se transforma en **energía eléctrica**.",
-    apply: [["Levantas una mochila de 5 kg hasta 2 m de altura. ¿Cuánta energía potencial gana? (g = 10 m/s²)", "Ep = m · g · h = 5 · 10 · 2 = 100 J."]],
+    example:
+      "Una central hidroeléctrica aprovecha la **energía potencial** del agua embalsada: al caer se vuelve **cinética**, mueve turbinas y se transforma en **energía eléctrica**.",
+    apply: [
+      [
+        "Levantas una mochila de 5 kg hasta 2 m de altura. ¿Cuánta energía potencial gana? (g = 10 m/s²)",
+        "Ep = m · g · h = 5 · 10 · 2 = 100 J.",
+      ],
+    ],
     question: "Si la energía no se destruye, ¿por qué se dice que «ahorramos energía»?",
   },
   {
-    id: "fracciones", keys: ["fraccion", "fracciones", "numerador", "denominador"], title: "Fracciones", area: "exactas",
-    intro: "Una **fracción** representa una o varias partes iguales de una unidad. Se escribe a/b, donde **a** es el numerador y **b** el denominador (b ≠ 0).",
+    id: "fracciones",
+    keys: ["fraccion", "fracciones", "numerador", "denominador"],
+    title: "Fracciones",
+    area: "exactas",
+    intro:
+      "Una **fracción** representa una o varias partes iguales de una unidad. Se escribe a/b, donde **a** es el numerador y **b** el denominador (b ≠ 0).",
     map: `
 # Elementos | Partes de una fracción
 - Numerador: indica cuántas partes se toman > El 3 en 3/4
@@ -666,13 +950,23 @@ const RAW: Raw[] = [
 - Buscar un divisor común: se dividen numerador y denominador por el mismo número > 6/8 = 3/4
 - Usar el MCD: dividir por el máximo común divisor simplifica de una vez > MCD(12, 18) = 6
 - Fracción irreducible: es la que ya no se puede simplificar más > 2/3`,
-    example: "Si una pizza tiene 8 tajadas y comes 3, comiste **3/8**; si tu amigo come 2/8, entre los dos comieron 3/8 + 2/8 = **5/8** (mismo denominador: solo se suman los numeradores).",
-    apply: [["Ana leyó 2/5 de un libro el lunes y 1/5 el martes. ¿Qué fracción le falta leer?", "Leyó 3/5, así que le faltan 5/5 − 3/5 = 2/5."]],
+    example:
+      "Si una pizza tiene 8 tajadas y comes 3, comiste **3/8**; si tu amigo come 2/8, entre los dos comieron 3/8 + 2/8 = **5/8** (mismo denominador: solo se suman los numeradores).",
+    apply: [
+      [
+        "Ana leyó 2/5 de un libro el lunes y 1/5 el martes. ¿Qué fracción le falta leer?",
+        "Leyó 3/5, así que le faltan 5/5 − 3/5 = 2/5.",
+      ],
+    ],
     question: "¿Por qué para sumar 1/2 + 1/3 no basta con sumar numeradores y denominadores?",
   },
   {
-    id: "ecuaciones", keys: ["ecuacion", "ecuaciones", "algebra", "incognita"], title: "Ecuaciones", area: "exactas",
-    intro: "Una **ecuación** es una igualdad entre dos expresiones que contiene una o más **incógnitas**. Resolverla es encontrar el valor que hace verdadera la igualdad.",
+    id: "ecuaciones",
+    keys: ["ecuacion", "ecuaciones", "algebra", "incognita"],
+    title: "Ecuaciones",
+    area: "exactas",
+    intro:
+      "Una **ecuación** es una igualdad entre dos expresiones que contiene una o más **incógnitas**. Resolverla es encontrar el valor que hace verdadera la igualdad.",
     map: `
 # Elementos | Partes de una ecuación
 - Miembros: son las expresiones a cada lado del signo igual > Primer miembro = segundo miembro
@@ -690,13 +984,18 @@ const RAW: Raw[] = [
 # Fórmula general | Ecuación de segundo grado
 - Fórmula cuadrática: x = (−b ± √(b² − 4ac)) / 2a > Hasta dos soluciones
 - Discriminante: Δ = b² − 4ac indica cuántas soluciones reales hay > Δ positivo: dos; Δ = 0: una; Δ negativo: ninguna real`,
-    example: "Si 3 cuadernos y un lapicero de S/ 2 cuestan S/ 17, planteas 3x + 2 = 17 → 3x = 15 → **x = 5**: cada cuaderno cuesta S/ 5.",
+    example:
+      "Si 3 cuadernos y un lapicero de S/ 2 cuestan S/ 17, planteas 3x + 2 = 17 → 3x = 15 → **x = 5**: cada cuaderno cuesta S/ 5.",
     apply: [["Resuelve 5x − 7 = 2x + 8.", "5x − 2x = 8 + 7 → 3x = 15 → x = 5."]],
     question: "¿Por qué al pasar un término al otro lado de la ecuación cambia de signo?",
   },
   {
-    id: "derivadas", keys: ["derivada", "derivadas", "calculo diferencial"], title: "Derivadas", area: "exactas",
-    intro: "La **derivada** mide la rapidez con que cambia una función. Geométricamente es la **pendiente de la recta tangente** a la curva en un punto.",
+    id: "derivadas",
+    keys: ["derivada", "derivadas", "calculo diferencial"],
+    title: "Derivadas",
+    area: "exactas",
+    intro:
+      "La **derivada** mide la rapidez con que cambia una función. Geométricamente es la **pendiente de la recta tangente** a la curva en un punto.",
     map: `
 # Concepto | Qué representa la derivada
 - Tasa de cambio instantánea: indica cuánto varía f(x) cuando x cambia muy poco > Velocidad instantánea
@@ -711,13 +1010,18 @@ const RAW: Raw[] = [
 - Máximos y mínimos: se encuentran donde f′(x) = 0 > Optimización
 - Crecimiento: si f′(x) es positiva la función crece y si es negativa decrece > Monotonía
 - Física: la velocidad es la derivada de la posición respecto al tiempo > v = dx/dt`,
-    example: "Si la posición de un auto es x(t) = 5t² metros, su velocidad es la derivada: v(t) = **10t**. A los 3 segundos va a 30 m/s.",
+    example:
+      "Si la posición de un auto es x(t) = 5t² metros, su velocidad es la derivada: v(t) = **10t**. A los 3 segundos va a 30 m/s.",
     apply: [["Deriva f(x) = 4x³ − 2x + 7.", "f′(x) = 12x² − 2 (la constante 7 se anula)."]],
     question: "¿Qué significa que la derivada de una función sea cero en un punto?",
   },
   {
-    id: "revolucion-francesa", keys: ["revolucion francesa", "bastilla", "robespierre"], title: "Revolución Francesa", area: "sociales",
-    intro: "La **Revolución Francesa** (1789–1799) acabó con el absolutismo en Francia, difundió los ideales de **libertad, igualdad y fraternidad** y marcó el inicio de la Edad Contemporánea.",
+    id: "revolucion-francesa",
+    keys: ["revolucion francesa", "bastilla", "robespierre"],
+    title: "Revolución Francesa",
+    area: "sociales",
+    intro:
+      "La **Revolución Francesa** (1789–1799) acabó con el absolutismo en Francia, difundió los ideales de **libertad, igualdad y fraternidad** y marcó el inicio de la Edad Contemporánea.",
     map: `
 # Causas | Factores que provocaron la revolución
 - Crisis económica: el Estado estaba endeudado y las malas cosechas encarecieron el pan > Hambre
@@ -735,13 +1039,31 @@ const RAW: Raw[] = [
 - Luis XVI: fue el rey guillotinado en 1793 > María Antonieta
 - Robespierre: fue el líder jacobino del periodo del Terror > Comité de Salvación Pública
 - Napoleón Bonaparte: cerró la revolución con el Consulado > 18 de brumario`,
-    example: "La toma de la **Bastilla** (14 de julio de 1789) fue simbólica: era una prisión que representaba el poder absoluto del rey. Hoy es la fiesta nacional de Francia.",
-    apply: [["¿Por qué la Revolución Francesa influyó en la independencia del Perú?", "Porque difundió ideas de soberanía popular y libertad que inspiraron a los criollos a cuestionar el dominio español."]],
-    question: "¿Cuál de las causas de la Revolución Francesa crees que fue decisiva? Justifica tu respuesta.",
+    example:
+      "La toma de la **Bastilla** (14 de julio de 1789) fue simbólica: era una prisión que representaba el poder absoluto del rey. Hoy es la fiesta nacional de Francia.",
+    apply: [
+      [
+        "¿Por qué la Revolución Francesa influyó en la independencia del Perú?",
+        "Porque difundió ideas de soberanía popular y libertad que inspiraron a los criollos a cuestionar el dominio español.",
+      ],
+    ],
+    question:
+      "¿Cuál de las causas de la Revolución Francesa crees que fue decisiva? Justifica tu respuesta.",
   },
   {
-    id: "independencia-peru", keys: ["independencia del peru", "independencia", "peru", "san martin", "ayacucho", "emancipacion"], title: "Independencia del Perú", area: "sociales",
-    intro: "La **independencia del Perú** fue el proceso por el cual el país se separó de España. Se proclamó el **28 de julio de 1821** y se consolidó con la batalla de **Ayacucho (1824)**.",
+    id: "independencia-peru",
+    keys: [
+      "independencia del peru",
+      "independencia",
+      "peru",
+      "san martin",
+      "ayacucho",
+      "emancipacion",
+    ],
+    title: "Independencia del Perú",
+    area: "sociales",
+    intro:
+      "La **independencia del Perú** fue el proceso por el cual el país se separó de España. Se proclamó el **28 de julio de 1821** y se consolidó con la batalla de **Ayacucho (1824)**.",
     map: `
 # Causas | Factores del proceso emancipador
 - Causas internas: el descontento criollo, las reformas borbónicas y las rebeliones previas > Túpac Amaru II (1780)
@@ -759,13 +1081,24 @@ const RAW: Raw[] = [
 - Nace la República: se forma un nuevo Estado independiente > Primer Congreso (1822)
 - Continuidades sociales: se mantuvieron el tributo indígena y la esclavitud por décadas > Abolidos en 1854
 - Inestabilidad política: predominaron los caudillos militares en los primeros años > Primer militarismo`,
-    example: "Aunque el Perú se declaró independiente en 1821, el virrey seguía controlando gran parte del territorio: la independencia solo se **consolidó** tras la **capitulación de Ayacucho** en diciembre de 1824.",
-    apply: [["¿Por qué se dice que la independencia no cambió de inmediato la situación de indígenas y esclavos?", "Porque el tributo indígena y la esclavitud continuaron hasta 1854: cambió el gobierno, pero no la estructura social."]],
-    question: "¿Por qué fue necesaria la llegada de Bolívar si San Martín ya había proclamado la independencia?",
+    example:
+      "Aunque el Perú se declaró independiente en 1821, el virrey seguía controlando gran parte del territorio: la independencia solo se **consolidó** tras la **capitulación de Ayacucho** en diciembre de 1824.",
+    apply: [
+      [
+        "¿Por qué se dice que la independencia no cambió de inmediato la situación de indígenas y esclavos?",
+        "Porque el tributo indígena y la esclavitud continuaron hasta 1854: cambió el gobierno, pero no la estructura social.",
+      ],
+    ],
+    question:
+      "¿Por qué fue necesaria la llegada de Bolívar si San Martín ya había proclamado la independencia?",
   },
   {
-    id: "incas", keys: ["incas", "inca", "tahuantinsuyo", "imperio incaico"], title: "El Imperio inca", area: "sociales",
-    intro: "El **Imperio inca** o **Tahuantinsuyo** fue el Estado más extenso de la América prehispánica (siglos XV y XVI), con capital en el **Cusco**.",
+    id: "incas",
+    keys: ["incas", "inca", "tahuantinsuyo", "imperio incaico"],
+    title: "El Imperio inca",
+    area: "sociales",
+    intro:
+      "El **Imperio inca** o **Tahuantinsuyo** fue el Estado más extenso de la América prehispánica (siglos XV y XVI), con capital en el **Cusco**.",
     map: `
 # Organización política | Un Estado centralizado
 - Sapa Inca: era el gobernante absoluto, considerado hijo del Sol > Pachacútec; Huayna Cápac
@@ -784,13 +1117,23 @@ const RAW: Raw[] = [
 - Expansión: Pachacútec convirtió el reino en imperio > Siglo XV
 - Guerra civil: Huáscar y Atahualpa se disputaron el poder > 1529–1532
 - Conquista: Pizarro capturó a Atahualpa en Cajamarca > 1532`,
-    example: "Los **andenes** son terrazas de cultivo en las laderas: evitan la erosión, aprovechan el agua y crean microclimas. Muchos se siguen usando hoy en el valle del Colca.",
-    apply: [["¿Cómo se comunicaba rápidamente un territorio tan extenso sin escritura alfabética?", "Con los chasquis, que corrían por el Qhapaq Ñan llevando mensajes y quipus en relevos."]],
+    example:
+      "Los **andenes** son terrazas de cultivo en las laderas: evitan la erosión, aprovechan el agua y crean microclimas. Muchos se siguen usando hoy en el valle del Colca.",
+    apply: [
+      [
+        "¿Cómo se comunicaba rápidamente un territorio tan extenso sin escritura alfabética?",
+        "Con los chasquis, que corrían por el Qhapaq Ñan llevando mensajes y quipus en relevos.",
+      ],
+    ],
     question: "¿Por qué la guerra civil entre Huáscar y Atahualpa facilitó la conquista española?",
   },
   {
-    id: "primera-guerra", keys: ["primera guerra mundial", "gran guerra"], title: "Primera Guerra Mundial", area: "sociales",
-    intro: "La **Primera Guerra Mundial** (1914–1918) enfrentó a la Triple Entente con las Potencias Centrales. Causó millones de muertes y transformó el mapa de Europa.",
+    id: "primera-guerra",
+    keys: ["primera guerra mundial", "gran guerra"],
+    title: "Primera Guerra Mundial",
+    area: "sociales",
+    intro:
+      "La **Primera Guerra Mundial** (1914–1918) enfrentó a la Triple Entente con las Potencias Centrales. Causó millones de muertes y transformó el mapa de Europa.",
     map: `
 # Causas | Factores del conflicto
 - Imperialismo: las potencias competían por colonias y mercados > África; Asia
@@ -805,13 +1148,24 @@ const RAW: Raw[] = [
 - Consecuencias humanas: murieron unos 10 millones de soldados > Crisis demográfica
 - Consecuencias políticas: cayeron los imperios alemán, austrohúngaro, ruso y otomano > Nuevos países
 - Tratado de Versalles: impuso duras sanciones a Alemania > 1919; Sociedad de Naciones`,
-    example: "Las **trincheras** eran zanjas donde los soldados vivían durante meses entre barro y enfermedades; avanzar unos metros podía costar miles de vidas, como en la batalla del Somme.",
-    apply: [["¿Por qué el asesinato de un archiduque desencadenó una guerra mundial?", "Por el sistema de alianzas: al declararse la guerra Austria-Hungría y Serbia, sus aliados entraron en cadena."]],
-    question: "¿Cómo crees que el Tratado de Versalles influyó en el inicio de la Segunda Guerra Mundial?",
+    example:
+      "Las **trincheras** eran zanjas donde los soldados vivían durante meses entre barro y enfermedades; avanzar unos metros podía costar miles de vidas, como en la batalla del Somme.",
+    apply: [
+      [
+        "¿Por qué el asesinato de un archiduque desencadenó una guerra mundial?",
+        "Por el sistema de alianzas: al declararse la guerra Austria-Hungría y Serbia, sus aliados entraron en cadena.",
+      ],
+    ],
+    question:
+      "¿Cómo crees que el Tratado de Versalles influyó en el inicio de la Segunda Guerra Mundial?",
   },
   {
-    id: "segunda-guerra", keys: ["segunda guerra mundial"], title: "Segunda Guerra Mundial", area: "sociales",
-    intro: "La **Segunda Guerra Mundial** (1939–1945) enfrentó a los **Aliados** contra el **Eje** (Alemania, Italia y Japón). Fue el conflicto más destructivo de la historia.",
+    id: "segunda-guerra",
+    keys: ["segunda guerra mundial"],
+    title: "Segunda Guerra Mundial",
+    area: "sociales",
+    intro:
+      "La **Segunda Guerra Mundial** (1939–1945) enfrentó a los **Aliados** contra el **Eje** (Alemania, Italia y Japón). Fue el conflicto más destructivo de la historia.",
     map: `
 # Causas | Origen del conflicto
 - Tratado de Versalles: generó resentimiento en Alemania por las duras sanciones > Revanchismo
@@ -826,13 +1180,31 @@ const RAW: Raw[] = [
 - Consecuencias humanas: murieron más de 50 millones de personas y ocurrió el Holocausto > Genocidio judío
 - Consecuencias políticas: nació la ONU y Alemania quedó dividida > 1945
 - Guerra Fría: comenzó la rivalidad entre EE. UU. y la URSS > Bloques capitalista y comunista`,
-    example: "La **ONU** se creó en 1945 para evitar otra guerra mundial: reemplazó a la Sociedad de Naciones, que había fracasado en detener a los regímenes totalitarios.",
-    apply: [["¿Por qué la crisis de 1929 ayudó al ascenso de Hitler?", "Porque el desempleo y la pobreza hicieron que muchos alemanes apoyaran soluciones extremas que prometían recuperar el país."]],
-    question: "¿Qué relación hay entre el final de la Segunda Guerra Mundial y el inicio de la Guerra Fría?",
+    example:
+      "La **ONU** se creó en 1945 para evitar otra guerra mundial: reemplazó a la Sociedad de Naciones, que había fracasado en detener a los regímenes totalitarios.",
+    apply: [
+      [
+        "¿Por qué la crisis de 1929 ayudó al ascenso de Hitler?",
+        "Porque el desempleo y la pobreza hicieron que muchos alemanes apoyaran soluciones extremas que prometían recuperar el país.",
+      ],
+    ],
+    question:
+      "¿Qué relación hay entre el final de la Segunda Guerra Mundial y el inicio de la Guerra Fría?",
   },
   {
-    id: "figuras-literarias", keys: ["figuras literarias", "figura literaria", "recursos literarios", "metafora", "hiperbole", "simil"], title: "Figuras literarias", area: "letras",
-    intro: "Las **figuras literarias** son recursos del lenguaje que se apartan del uso común para dar belleza, fuerza o expresividad a un texto.",
+    id: "figuras-literarias",
+    keys: [
+      "figuras literarias",
+      "figura literaria",
+      "recursos literarios",
+      "metafora",
+      "hiperbole",
+      "simil",
+    ],
+    title: "Figuras literarias",
+    area: "letras",
+    intro:
+      "Las **figuras literarias** son recursos del lenguaje que se apartan del uso común para dar belleza, fuerza o expresividad a un texto.",
     map: `
 # Figuras de significado | Cambian el sentido habitual de las palabras
 - Metáfora: identifica una realidad con otra sin usar nexo > «Tus dientes son perlas»
@@ -847,13 +1219,23 @@ const RAW: Raw[] = [
 - Antítesis: contrapone dos ideas opuestas > «Es tan corto el amor y es tan largo el olvido»
 - Oxímoron: une dos términos contradictorios > «Silencio atronador»
 - Ironía: da a entender lo contrario de lo que se dice > «¡Qué día tan bonito!» (bajo la lluvia)`,
-    example: "Si dices «estoy muerto de cansancio», usas una **hipérbole**: exageras para expresar que estás muy cansado, no que hayas muerto.",
-    apply: [["Identifica la figura: «Sus manos eran dos palomas blancas».", "Metáfora: identifica las manos con palomas sin usar «como»."]],
+    example:
+      "Si dices «estoy muerto de cansancio», usas una **hipérbole**: exageras para expresar que estás muy cansado, no que hayas muerto.",
+    apply: [
+      [
+        "Identifica la figura: «Sus manos eran dos palomas blancas».",
+        "Metáfora: identifica las manos con palomas sin usar «como».",
+      ],
+    ],
     question: "¿Qué diferencia hay entre una metáfora y un símil? Crea un ejemplo de cada uno.",
   },
   {
-    id: "acentuacion", keys: ["acentuacion", "tildacion", "tilde", "tildes", "agudas", "esdrujulas", "acento"], title: "Reglas de acentuación", area: "letras",
-    intro: "La **acentuación** indica qué sílaba se pronuncia con más fuerza (**sílaba tónica**) y cuándo esa fuerza se marca con **tilde** según las reglas generales.",
+    id: "acentuacion",
+    keys: ["acentuacion", "tildacion", "tilde", "tildes", "agudas", "esdrujulas", "acento"],
+    title: "Reglas de acentuación",
+    area: "letras",
+    intro:
+      "La **acentuación** indica qué sílaba se pronuncia con más fuerza (**sílaba tónica**) y cuándo esa fuerza se marca con **tilde** según las reglas generales.",
     map: `
 # Reglas generales | Según la posición de la sílaba tónica
 - Palabras agudas: tienen la tónica en la última sílaba y llevan tilde si terminan en n, s o vocal > Canción; Café; Reloj (sin tilde)
@@ -870,13 +1252,23 @@ const RAW: Raw[] = [
 # Interrogativos y exclamativos | Qué, quién, cómo, cuándo, dónde
 - Con tilde: llevan tilde cuando preguntan o exclaman > ¿Qué estudias?
 - Sin tilde: no la llevan cuando funcionan como relativos > Lo que estudias`,
-    example: "«**Tú** sabes que **tu** examen es mañana»: el primer «tú» es pronombre (lleva tilde diacrítica) y el segundo es posesivo (sin tilde).",
-    apply: [["¿Por qué «reloj» no lleva tilde aunque sea aguda?", "Porque termina en j, no en n, s ni vocal."]],
+    example:
+      "«**Tú** sabes que **tu** examen es mañana»: el primer «tú» es pronombre (lleva tilde diacrítica) y el segundo es posesivo (sin tilde).",
+    apply: [
+      [
+        "¿Por qué «reloj» no lleva tilde aunque sea aguda?",
+        "Porque termina en j, no en n, s ni vocal.",
+      ],
+    ],
     question: "¿Por qué «país» lleva tilde si las agudas terminadas en s ya la llevan? ¿Y «ataúd»?",
   },
   {
-    id: "memoria", keys: ["memoria", "olvido", "repaso espaciado", "tecnicas de estudio"], title: "La memoria", area: "humanidades",
-    intro: "La **memoria** es el proceso psicológico que permite codificar, almacenar y recuperar información. Sin memoria no habría aprendizaje.",
+    id: "memoria",
+    keys: ["memoria", "olvido", "repaso espaciado", "tecnicas de estudio"],
+    title: "La memoria",
+    area: "humanidades",
+    intro:
+      "La **memoria** es el proceso psicológico que permite codificar, almacenar y recuperar información. Sin memoria no habría aprendizaje.",
     map: `
 #> Etapas de la memoria | Procesamiento de la información
 - Codificación: transforma la información para poder guardarla > Requiere atención
@@ -894,13 +1286,23 @@ const RAW: Raw[] = [
 - Repaso espaciado: consiste en repasar en días distintos > Flashcards; Curva del olvido
 - Recuperación activa: consiste en ponerse a prueba en vez de releer > Autoevaluación
 - Elaboración: consiste en relacionar lo nuevo con lo que ya sabes > Ejemplos propios`,
-    example: "Si estudias 20 minutos hoy, 10 mañana y 5 dentro de una semana, recordarás mucho más que estudiando una hora la noche anterior: es el efecto del **repaso espaciado**.",
-    apply: [["Recuerdas cómo nadar aunque no lo hagas hace años. ¿Qué tipo de memoria interviene?", "La memoria procedimental, que guarda habilidades motoras."]],
+    example:
+      "Si estudias 20 minutos hoy, 10 mañana y 5 dentro de una semana, recordarás mucho más que estudiando una hora la noche anterior: es el efecto del **repaso espaciado**.",
+    apply: [
+      [
+        "Recuerdas cómo nadar aunque no lo hagas hace años. ¿Qué tipo de memoria interviene?",
+        "La memoria procedimental, que guarda habilidades motoras.",
+      ],
+    ],
     question: "¿Por qué dormir bien antes de un examen ayuda a recordar lo estudiado?",
   },
 ];
 
-const strip = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const strip = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 
 function parseMap(map: string): TopicBranch[] {
   const branches: TopicBranch[] = [];
@@ -909,13 +1311,23 @@ function parseMap(map: string): TopicBranch[] {
     if (!line) continue;
     const head = line.match(/^#(>)?\s*(.+?)\s*\|\s*(.+)$/);
     if (head) {
-      branches.push({ label: head[2]!, summary: head[3]!, points: [], ...(head[1] ? { ordered: true } : {}) });
+      branches.push({
+        label: head[2]!,
+        summary: head[3]!,
+        points: [],
+        ...(head[1] ? { ordered: true } : {}),
+      });
       continue;
     }
     const pt = line.match(/^-\s*(.+?):\s*(.+?)(?:\s+>\s+(.+))?$/);
     const branch = branches[branches.length - 1];
     if (!pt || !branch) continue;
-    const items = pt[3] ? pt[3].split(";").map((x) => x.trim()).filter(Boolean) : [];
+    const items = pt[3]
+      ? pt[3]
+          .split(";")
+          .map((x) => x.trim())
+          .filter(Boolean)
+      : [];
     branch.points.push({ label: pt[1]!, detail: pt[2]!, ...(items.length ? { items } : {}) });
   }
   return branches;
