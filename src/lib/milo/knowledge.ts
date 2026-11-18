@@ -1,6 +1,7 @@
 // Biblioteca académica de Milo: temas estructurados que el motor interno usa sin internet ni IA externa.
 // Formato de cada `map`: «# Apartado | resumen» («#>» si sus ideas siguen un orden) y «- Idea: detalle > ejemplo; ejemplo».
 import type { MindBranch } from "@/lib/study-ai";
+import { PERU_HISTORY } from "./knowledge-peru";
 
 export type Area = "ciencias" | "exactas" | "sociales" | "letras" | "humanidades";
 export type TopicBranch = MindBranch & { ordered?: boolean };
@@ -17,6 +18,7 @@ export type Topic = {
   links?: string;
 };
 type Raw = Omit<Topic, "branches" | "apply"> & { map: string; apply?: [string, string][] };
+export type RawTopic = Raw;
 
 export const AREA_LINKS: Record<Area, string> = {
   ciencias:
@@ -842,7 +844,7 @@ const RAW: Raw[] = [
 - Isótopos: son átomos del mismo elemento con distinto número de neutrones > Carbono-12; Carbono-14
 #> Modelos atómicos | Evolución de la idea del átomo
 - Modelo de Dalton: propone esferas macizas e indivisibles > 1808
-- Modelo de Thomson: propone electrones incrustados en una masa positiva > 1897
+- Modelo de Thomson: propone electrones incrustados en una masa positiva > 1904
 - Modelo de Rutherford: descubre un núcleo pequeño, denso y positivo > 1911
 - Modelo de Bohr: ubica a los electrones en niveles de energía > 1913; Base del modelo actual
 # Tabla periódica | Organización de los 118 elementos
@@ -1052,14 +1054,7 @@ const RAW: Raw[] = [
   },
   {
     id: "independencia-peru",
-    keys: [
-      "independencia del peru",
-      "independencia",
-      "peru",
-      "san martin",
-      "ayacucho",
-      "emancipacion",
-    ],
+    keys: ["independencia del peru", "independencia", "san martin", "ayacucho", "emancipacion"],
     title: "Independencia del Perú",
     area: "sociales",
     intro:
@@ -1069,10 +1064,10 @@ const RAW: Raw[] = [
 - Causas internas: el descontento criollo, las reformas borbónicas y las rebeliones previas > Túpac Amaru II (1780)
 - Causas externas: la Ilustración, la independencia de EE. UU., la Revolución Francesa y la invasión napoleónica a España > 1808
 #> Etapas | Desarrollo del proceso
-- Rebeliones precursoras: hubo levantamientos indígenas y criollos > Túpac Amaru II; Pumacahua (1814)
-- Corriente libertadora del sur: José de San Martín desembarca en Paracas > 1820
+- Rebeliones precursoras: hubo levantamientos indígenas y criollos > Túpac Amaru II (1780); Zela (1811); Pumacahua (1814)
+- Corriente libertadora del sur: José de San Martín desembarca en Paracas > 8 de septiembre de 1820
 - Proclamación: San Martín proclama la independencia en Lima > 28 de julio de 1821
-- Consolidación: Bolívar y Sucre vencen a los realistas > Junín y Ayacucho (1824)
+- Consolidación: Bolívar y Sucre vencen a los realistas > Junín (6 de agosto de 1824); Ayacucho (9 de diciembre de 1824)
 # Personajes | Protagonistas del proceso
 - José de San Martín: fue el libertador argentino y primer Protector del Perú > Bandera; Himno
 - Simón Bolívar: fue el libertador venezolano que culminó la guerra > Junín
@@ -1333,7 +1328,7 @@ function parseMap(map: string): TopicBranch[] {
   return branches;
 }
 
-export const TOPICS: Topic[] = RAW.map(({ map, apply, keys, ...t }) => ({
+export const TOPICS: Topic[] = [...RAW, ...PERU_HISTORY].map(({ map, apply, keys, ...t }) => ({
   ...t,
   keys: keys.map(strip),
   branches: parseMap(map),

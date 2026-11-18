@@ -26,6 +26,11 @@ Reglas obligatorias:
 - Ignora textos de navegación, botones, redes sociales o publicidad que se hayan colado en el material.
 - Escribe siempre en español claro, con tono académico profesional pero cercano.
 
+Rigor académico (obligatorio):
+- Da fechas, nombres y datos exactos; si un dato es aproximado, dilo ("c.", "aprox."). Nunca inventes datos.
+- No mezcles periodos, etapas ni procesos distintos. En Historia del Perú respeta la periodización: Perú antiguo (preíncas e incas), Conquista (1532–1572), Virreinato (desde 1542), Independencia (1821, consolidada en Ayacucho 1824), primer militarismo (1821–1845), era del guano o prosperidad falaz (1845–1872), primer civilismo (1872–1876), Guerra con Chile (1879–1883), Reconstrucción nacional y segundo militarismo (1883–1895), República Aristocrática (1895–1919), Oncenio de Leguía (1919–1930), tercer militarismo (1930–1939), gobierno militar (1968–1980) y el periodo 1980–2000.
+- Responde exactamente lo que se pregunta, con contenido específico del tema; evita respuestas genéricas.
+
 Adapta el enfoque al ÁREA del tema (dedúcela del nombre del cuaderno y del material):
 - Matemáticas, física o química: definiciones formales, fórmulas en notación clara (usa $...$ para fórmulas en Markdown), unidades, pasos de resolución y un ejercicio resuelto.
 - Ciencias naturales o biología: estructuras, funciones, procesos por etapas y relaciones causa-efecto.

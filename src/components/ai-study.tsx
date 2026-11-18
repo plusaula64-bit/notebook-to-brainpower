@@ -20,7 +20,7 @@ import {
   type MindPoint,
   type StudyAiResult,
 } from "@/lib/study-ai";
-import { miloMindMap, miloStudy, miloSummary } from "@/lib/milo/engine";
+import { MILO_VERSION, miloMindMap, miloStudy, miloSummary } from "@/lib/milo/engine";
 import { aiPaused, isOnline, pauseAi } from "@/lib/ai-availability";
 
 type Value<K extends AiKind> = K extends "mindmap" ? AiMindMap : K extends "flashcards" ? AiFlashcard[] : string;
@@ -34,8 +34,9 @@ export function useStudyAi<K extends AiKind>(n: Notebook, update: ((n: Notebook)
   latest.current = n;
   const material = studyMaterial(n);
   const key = KIND_VERSION[kind] + contentKey(n.name, material);
+  const miloKey = key + MILO_VERSION;
   const cached = n.studio?.ai?.[kind];
-  const fresh = cached?.key === key;
+  const fresh = cached ? cached.key === (cached.engine === "milo" ? miloKey : key) : false;
   const [loading, setLoading] = useState(false);
   const tried = useRef<string | null>(null);
   const busy = useRef(false);
@@ -59,7 +60,8 @@ export function useStudyAi<K extends AiKind>(n: Notebook, update: ((n: Notebook)
       engine = "milo";
     }
     const cur = latest.current;
-    const entry = kind === "mindmap" ? { key, data: result.map!, engine } : kind === "flashcards" ? { key, data: result.cards!, engine } : { key, markdown: result.markdown!, engine };
+    const k = engine === "milo" ? miloKey : key;
+    const entry = kind === "mindmap" ? { key: k, data: result.map!, engine } : kind === "flashcards" ? { key: k, data: result.cards!, engine } : { key: k, markdown: result.markdown!, engine };
     // Un mazo nuevo empieza de cero: el progreso anterior apuntaba a otras tarjetas.
     const progress = kind === "flashcards" ? { known: [], review: [], card: 0 } : {};
     update?.({ ...cur, studio: { ...cur.studio, ...progress, ai: { ...cur.studio?.ai, [kind]: entry } } });

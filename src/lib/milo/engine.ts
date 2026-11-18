@@ -24,6 +24,9 @@ import {
   webSearchMany,
 } from "@/lib/tutor";
 
+/** Versión del motor: al cambiarla, el contenido ya creado por Milo se vuelve a generar. */
+export const MILO_VERSION = "|milo2";
+
 export const norm = (s: string) =>
   s
     .toLowerCase()
@@ -540,23 +543,39 @@ const matchCount = (tokens: string[], text: string) => {
 };
 
 type Focus = { topic: Topic; branch: TopicBranch; point?: MindPoint; item?: string; score: number };
+/** Apartado o idea que pregunta el estudiante. Si dos apartados empatan (p. ej. «etapas»), devuelve null para dar la visión general. */
 function findFocus(tokens: string[], list: Topic[], bonus?: Topic | null): Focus | null {
   let best: Focus | null = null;
+  let tie = false;
+  const consider = (f: Focus) => {
+    if (!best || f.score > best.score) {
+      best = f;
+      tie = false;
+    } else if (f.score === best.score && !f.point && !best.point && f.topic === best.topic)
+      tie = true;
+  };
   for (const topic of list) {
     const extra = bonus && topic.id === bonus.id ? 1 : 0;
     for (const branch of topic.branches) {
       const bs = matchCount(tokens, branch.label) * 5;
-      if (bs && (!best || bs + extra > best.score)) best = { topic, branch, score: bs + extra };
+      if (bs) consider({ topic, branch, score: bs + extra });
       for (const point of branch.points) {
         const ps = matchCount(tokens, point.label) * 4;
         const item = (point.items ?? []).find((it) => matchCount(tokens, it) > 0);
         const score = ps + (item ? 2 : 0);
-        if (score && (!best || score + extra > best.score))
-          best = { topic, branch, point, ...(item && !ps ? { item } : {}), score: score + extra };
+        if (score)
+          consider({
+            topic,
+            branch,
+            point,
+            ...(item && !ps ? { item } : {}),
+            score: score + extra,
+          });
       }
     }
   }
-  return best && best.score >= 2 ? best : null;
+  const found = best as Focus | null;
+  return found && found.score >= 2 && !tie ? found : null;
 }
 
 function notesLine(tokens: string[], notes: string) {
@@ -886,12 +905,10 @@ export function miloTable(topic: string, material: string) {
   const t = findTopic(topic, material);
   const points = (t ? t.branches : frameworkBranches(topic)).flatMap((b) => b.points);
   const text = norm(material);
-  const rows = points
-    .slice(0, 10)
-    .map((p) => ({
-      term: p.label,
-      count: Math.max(1, hits(text, norm(p.label))),
-      context: dot(cap(p.detail)),
-    }));
+  const rows = points.slice(0, 10).map((p) => ({
+    term: p.label,
+    count: Math.max(1, hits(text, norm(p.label))),
+    context: dot(cap(p.detail)),
+  }));
   return [...own, ...rows.filter((r) => !own.some((o) => norm(o.term) === norm(r.term)))];
 }

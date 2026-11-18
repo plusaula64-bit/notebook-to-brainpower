@@ -142,3 +142,47 @@ describe("Estudio+ y Autoevaluación con Milo", () => {
     expect(miloTable("Incas", "").length).toBeGreaterThanOrEqual(4);
   });
 });
+
+describe("Historia del Perú con etapas precisas", () => {
+  it("un cuaderno «Historia del Perú» usa la periodización del Perú, no la historia general", () => {
+    expect(findTopic("Historia del Perú")?.id).toBe("historia-peru");
+    const md = miloSummary("Historia del Perú", "");
+    expect(md).toContain("Primer militarismo (1821–1845)");
+    expect(md).toContain("Guerra con Chile (1879–1883)");
+    expect(md).toContain("Oncenio de Leguía (1919–1930)");
+  });
+
+  it("distingue los tres militarismos con sus fechas", () => {
+    const r = miloReply("¿Qué fue el militarismo?", "", "Historia del Perú");
+    for (const d of ["1821–1845", "1883–1895", "1930–1939"]) expect(r.text).toContain(d);
+  });
+
+  it("el segundo militarismo no se mezcla con el primero ni con el tercero", () => {
+    const r = miloReply("¿Qué fue el segundo militarismo?", "", "Historia del Perú");
+    expect(r.text).toContain("Contrato Grace");
+    expect(r.text).not.toContain("Santa Cruz");
+    expect(r.text).not.toContain("Sánchez Cerro");
+  });
+
+  it("la Guerra con Chile no se responde con la independencia", () => {
+    const r = miloReply("¿Qué pasó en la Guerra con Chile?", "", "Historia del Perú");
+    expect(r.text).toContain("Tratado de Ancón");
+    expect(r.text).not.toContain("San Martín");
+  });
+
+  it("responde por personajes y fechas concretas", () => {
+    expect(miloReply("¿Quién fue Miguel Grau?", "", "Historia del Perú").text).toContain("Angamos");
+    expect(miloReply("¿Qué fue la prosperidad falaz?", "", "Historia del Perú").text).toContain(
+      "1845–1872",
+    );
+    expect(miloReply("¿Qué hizo Manuel Pardo?", "", "Historia del Perú").text).toContain(
+      "primer presidente civil",
+    );
+  });
+
+  it("al preguntar por las etapas de la república da la visión completa", () => {
+    const r = miloReply("¿Cuáles son las etapas de la república?", "", "Historia del Perú");
+    expect(r.text).toContain("República en el siglo XIX");
+    expect(r.text).toContain("República en el siglo XX");
+  });
+});
