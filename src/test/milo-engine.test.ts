@@ -175,8 +175,8 @@ describe("Historia del Perú con etapas precisas", () => {
     expect(miloReply("¿Qué fue la prosperidad falaz?", "", "Historia del Perú").text).toContain(
       "1845–1872",
     );
-    expect(miloReply("¿Qué hizo Manuel Pardo?", "", "Historia del Perú").text).toContain(
-      "primer presidente civil",
+    expect(miloReply("¿Qué hizo Manuel Pardo?", "", "Historia del Perú").text).toMatch(
+      /primer presidente civil/i,
     );
   });
 
@@ -184,5 +184,27 @@ describe("Historia del Perú con etapas precisas", () => {
     const r = miloReply("¿Cuáles son las etapas de la república?", "", "Historia del Perú");
     expect(r.text).toContain("República en el siglo XIX");
     expect(r.text).toContain("República en el siglo XX");
+  });
+});
+
+describe("flashcards de historia sin preguntas ambiguas", () => {
+  it("ninguna tarjeta queda con huecos vacíos ni pregunta por «Fin» o «Contexto» sin su etapa", () => {
+    for (const topic of ["Historia del Perú", "Los militarismos en el Perú", "Guerra con Chile"]) {
+      for (const seed of [1, 2, 3, 4]) {
+        for (const c of miloFlashcards(topic, "", "", [], seed)) {
+          expect(c.question).not.toContain("«»");
+          expect(c.question).not.toMatch(/«(Fin|Contexto|Causas|Gobernantes)»/);
+        }
+      }
+    }
+  });
+
+  it("en el siglo XX, después del tercer militarismo no se salta a 1968", async () => {
+    const { topicCards } = await import("@/lib/milo/engine");
+    const peru = TOPICS.find((t) => t.id === "historia-peru")!;
+    const card = topicCards(peru).find((c) =>
+      c.question.includes("después de «Tercer militarismo"),
+    );
+    expect(card?.answer).toContain("1939 a 1968");
   });
 });

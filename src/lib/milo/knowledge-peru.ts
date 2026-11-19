@@ -39,12 +39,16 @@ export const PERU_HISTORY: RawTopic[] = [
 - Primer civilismo (1872–1876): Manuel Pardo es el primer presidente civil y enfrenta la crisis fiscal > Partido Civil
 - Guerra con Chile (1879–1883): guerra por el salitre que termina con el Tratado de Ancón > Grau; Bolognesi; Cáceres
 - Reconstrucción nacional y segundo militarismo (1883–1895): los jefes militares de la guerra gobiernan un país arruinado > Iglesias; Cáceres; Contrato Grace (1889)
-#> República en el siglo XX | De 1895 al año 2000
+#> República en el siglo XX (1895–1968) | De la República Aristocrática al primer gobierno de Belaúnde
 - República Aristocrática (1895–1919): gobiernan Piérola y luego el Partido Civil, ligado a la élite exportadora > Azúcar; Algodón; Caucho
 - Oncenio de Leguía (1919–1930): once años de gobierno autoritario llamado «Patria Nueva» > Constitución de 1920; Tratado de Lima (1929)
 - Tercer militarismo (1930–1939): Sánchez Cerro y Benavides gobiernan tras la caída de Leguía > Revolución de Trujillo (1932)
+- Gobiernos de 1939 a 1968: alternan gobiernos civiles con el Ochenio del general Odría > Prado; Bustamante y Rivero; Odría (1948–1956); Belaúnde (1963–1968)
+#> Del gobierno militar al año 2000 | Reformas, retorno a la democracia y conflicto armado
 - Gobierno militar (1968–1980): Velasco y Morales Bermúdez aplican reformas estatistas > Reforma agraria (1969); Constitución de 1979
-- Democracia y conflicto armado interno (1980–2000): crisis económica y violencia terrorista > Belaúnde; García; Fujimori`,
+- Segundo gobierno de Belaúnde (1980–1985): vuelve la democracia y empieza la violencia de Sendero Luminoso > Elecciones de 1980
+- Primer gobierno de Alan García (1985–1990): termina con hiperinflación y crisis económica > Hiperinflación
+- Gobierno de Alberto Fujimori (1990–2000): ajuste económico, autogolpe y derrota de Sendero Luminoso > Autogolpe (1992); Constitución de 1993`,
     example:
       "No hay que confundir los **militarismos**: el **primero** (1821–1845) nace del caos posterior a la independencia; el **segundo** (1883–1895), de la derrota ante Chile; y el **tercero** (1930–1939), de la caída de Leguía y la crisis mundial de 1929.",
     apply: [

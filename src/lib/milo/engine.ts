@@ -138,7 +138,7 @@ function frameworkBranches(topic: string): MindBranch[] {
 export function miloMindMap(topic: string, material: string, extra = ""): AiMindMap {
   const t = findTopic(topic, material);
   if (t) {
-    const branches = t.branches.slice(0, 5).map(plainBranch);
+    const branches = t.branches.slice(0, 6).map(plainBranch);
     const mine = notesBranch(material);
     if (mine) branches.push(mine);
     return { center: t.title, branches };
@@ -346,63 +346,76 @@ function mixTypes(cards: AiFlashcard[], rand: () => number) {
   return out;
 }
 
+const GENERIC = new Set(
+  "causas|contexto|fin|final|gobernantes|caudillos|origen|logros|problemas|abolicion|constituciones|educacion|descentralizacion|obras|consecuencias|organizacion|transicion|salitre|politica|economia|rasgo comun|origen distinto|lo que vino despues".split(
+    "|",
+  ),
+);
+/** Etiquetas como «Fin» o «Contexto» solo tienen sentido junto a su apartado. */
+const isGeneric = (label: string) => GENERIC.has(norm(label).trim());
+const pname = (p: MindPoint, b: MindBranch) =>
+  isGeneric(p.label) ? `${p.label} (${b.label})` : p.label;
+
 export function topicCards(t: Topic): AiFlashcard[] {
   const cards: AiFlashcard[] = [];
   const title = t.title;
   t.branches.forEach((b) => {
     const causal = /causa|consecuencia|funci|importancia|factor/i.test(b.label);
     b.points.forEach((p, j) => {
+      const pl = pname(p, b);
       const ex = p.items?.length ? ` Ejemplos: ${p.items.join(", ")}.` : "";
       const answer = `${dot(cap(p.detail))}${ex}`;
       if (causal) {
         const question = /consecuencia/i.test(b.label)
-          ? `¿Qué consecuencia tuvo ${title} en el ámbito «${p.label}»?`
+          ? `¿Qué consecuencia tuvo ${title} en el ámbito «${pl}»?`
           : /causa|factor/i.test(b.label)
-            ? `¿Cómo influyó «${p.label}» en ${title}?`
+            ? `¿Cómo influyó «${pl}» en ${title}?`
             : /funci/i.test(b.label)
-              ? `¿Por qué es importante la función de «${p.label}» en ${title}?`
-              : `¿Por qué ${title} es clave en relación con «${p.label}»?`;
+              ? `¿Por qué es importante la función de «${pl}» en ${title}?`
+              : `¿Por qué ${title} es clave en relación con «${pl}»?`;
         cards.push({ type: "causa", question, answer, hint: `Piensa en «${b.label}».` });
       } else {
         const question = [
-          `¿Qué es «${p.label}» en ${title}?`,
-          `Define «${p.label}» dentro de «${b.label}».`,
-          `Explica qué caracteriza a «${p.label}».`,
+          `¿Qué es «${pl}» en ${title}?`,
+          `Define «${pl}» dentro de «${b.label}».`,
+          `Explica qué caracteriza a «${pl}».`,
         ][j % 3]!;
         cards.push({ type: "concepto", question, answer, hint: `Forma parte de «${b.label}».` });
       }
-      cards.push({
-        type: "completar",
-        question: `Completa con el concepto correcto: _____ → ${dot(p.detail)}`,
-        answer: p.label,
-        hint: `Pertenece a «${b.label}» y empieza por «${p.label[0]}».`,
-      });
+      if (!isGeneric(p.label))
+        cards.push({
+          type: "completar",
+          question: `Completa con el concepto correcto: _____ → ${dot(p.detail)}`,
+          answer: p.label,
+          hint: `Pertenece a «${b.label}» y empieza por «${p.label[0]}».`,
+        });
       const other = b.points[(j + 1) % b.points.length];
-      if (j % 2 === 1 && other && other !== p) {
+      if (j % 2 === 1 && other && other !== p && !isGeneric(other.label)) {
         cards.push({
           type: "verdadero_falso",
-          question: `¿Verdadero o falso? «${p.label}»: ${dot(other.detail)}`,
-          answer: `Falso. Eso corresponde a «${other.label}». «${p.label}»: ${dot(p.detail)}`,
+          question: `¿Verdadero o falso? «${pl}»: ${dot(other.detail)}`,
+          answer: `Falso. Eso corresponde a «${other.label}». «${pl}»: ${dot(p.detail)}`,
         });
       } else {
         cards.push({
           type: "verdadero_falso",
-          question: `¿Verdadero o falso? «${p.label}»: ${dot(p.detail)}`,
+          question: `¿Verdadero o falso? «${pl}»: ${dot(p.detail)}`,
           answer: `Verdadero. Forma parte de «${b.label}»: ${dot(lowerFirst(b.summary))}`,
         });
       }
-      if (j === 0 && p.items?.length) {
+      if (j === 0 && p.items?.length && !isGeneric(p.label)) {
         cards.push({
           type: "aplicacion",
-          question: `Menciona un ejemplo concreto de «${p.label}» y explica por qué lo es.`,
+          question: `Menciona un ejemplo concreto de «${pl}» y explica por qué lo es.`,
           answer: `${p.items.join(", ")}. ${dot(cap(p.detail))}`,
-          hint: `Recuerda qué define a «${p.label}».`,
+          hint: `Recuerda qué define a «${pl}».`,
         });
       }
     });
     for (let j = 0; j + 1 < b.points.length; j += 2) {
       const A = b.points[j]!,
         B = b.points[j + 1]!;
+      if (isGeneric(A.label) || isGeneric(B.label)) continue;
       cards.push({
         type: "comparacion",
         question: `¿Qué diferencia hay entre «${A.label}» y «${B.label}»?`,
@@ -630,9 +643,9 @@ function branchAnswer(t: Topic, b: TopicBranch, tokens: string[], notes: string)
     notesLine(tokens, notes),
     "",
     "### Para repasar",
-    p0 && p1
+    p0 && p1 && !isGeneric(p0.label) && !isGeneric(p1.label)
       ? `¿Qué diferencia hay entre **${p0.label}** y **${p1.label}**? Explícalo con un ejemplo.`
-      : t.question,
+      : `Explica con tus palabras **${b.label}** y menciona un dato concreto (fecha, nombre o ejemplo) de cada idea clave.`,
   ].join("\n");
 }
 
@@ -642,7 +655,7 @@ function pointAnswer(f: Focus, tokens: string[], notes: string) {
   const siblings = b.points.filter((x) => x !== p).slice(0, 3);
   const apply = t.apply.find(([q]) => matchCount(words(p.label), q) > 0);
   return [
-    `## ${f.item ?? p.label}`,
+    `## ${f.item ?? pname(p, b)}`,
     f.item
       ? `**${f.item}** es un ejemplo de **${p.label}**, dentro de **${b.label}** (${t.title}).`
       : `**${p.label}** forma parte de **${b.label}** en ${t.title}: ${dot(lowerFirst(b.summary))}`,
@@ -663,7 +676,9 @@ function pointAnswer(f: Focus, tokens: string[], notes: string) {
     notesLine(tokens, notes),
     "",
     "### Para repasar",
-    siblings[0] ? `¿En qué se diferencia **${p.label}** de **${siblings[0].label}**?` : t.question,
+    siblings[0] && !isGeneric(p.label) && !isGeneric(siblings[0].label)
+      ? `¿En qué se diferencia **${p.label}** de **${siblings[0].label}**?`
+      : `Explica con tus palabras **${pname(p, b)}** y relaciónalo con **${b.label}**.`,
   ].join("\n");
 }
 

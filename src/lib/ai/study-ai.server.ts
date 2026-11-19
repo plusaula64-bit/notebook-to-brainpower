@@ -13,7 +13,12 @@ const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1";
 const MODEL = "openai/gpt-6-astra";
 
 export type StudyAiKind = "mindmap" | "summary" | "notes" | "flashcards";
-export type StudyAiRequestBody = { kind: StudyAiKind; notebook: string; notes: string; exclude?: string[] };
+export type StudyAiRequestBody = {
+  kind: StudyAiKind;
+  notebook: string;
+  notes: string;
+  exclude?: string[];
+};
 
 const BASE = `Eres un docente experto y diseñador pedagógico de AulaPlus para estudiantes de secundaria y universidad.
 Tu trabajo es TRANSFORMAR el material en contenido de estudio estructurado y profesional, adaptado a la asignatura y al tema concreto.
@@ -125,7 +130,15 @@ const flashcardsSchema = z.object({
   cards: z
     .array(
       z.object({
-        type: z.enum(["concepto", "causa", "proceso", "comparacion", "aplicacion", "completar", "verdadero_falso"]),
+        type: z.enum([
+          "concepto",
+          "causa",
+          "proceso",
+          "comparacion",
+          "aplicacion",
+          "completar",
+          "verdadero_falso",
+        ]),
         question: z.string().describe("Pregunta específica del tema"),
         answer: z.string().describe("Respuesta precisa en 1 a 3 frases"),
         hint: z.string().describe("Pista breve que no revela la respuesta"),
@@ -144,7 +157,10 @@ export async function handleStudyAiRequest(request: Request, body: StudyAiReques
   const notes = cleanImportedText(body.notes).slice(0, 14000);
   const topic = body.notebook.trim().slice(0, 120) || "Tema de estudio";
   const exclude = Array.isArray(body.exclude)
-    ? body.exclude.filter((q): q is string => typeof q === "string").map((q) => q.slice(0, 240)).slice(0, 30)
+    ? body.exclude
+        .filter((q): q is string => typeof q === "string")
+        .map((q) => q.slice(0, 240))
+        .slice(0, 30)
     : [];
   const base = notes
     ? `Cuaderno / asignatura: "${topic}".\n\nMATERIAL DEL ESTUDIANTE (base principal):\n"""\n${notes}\n"""`

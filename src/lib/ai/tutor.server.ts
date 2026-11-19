@@ -58,7 +58,9 @@ export function handleTutorRequest(request: Request, body: TutorRequestBody) {
     : `Cuaderno activo: "${body.notebook}". El estudiante aún no tiene apuntes en este cuaderno.`;
 
   const messages: ModelMessage[] = [
-    ...(body.history ?? []).slice(-10).map((m): ModelMessage => ({ role: m.role, content: m.text.slice(0, 2000) })),
+    ...(body.history ?? [])
+      .slice(-10)
+      .map((m): ModelMessage => ({ role: m.role, content: m.text.slice(0, 2000) })),
     { role: "user", content: body.question.slice(0, 2000) },
   ];
 
@@ -86,11 +88,9 @@ export function handleTutorRequest(request: Request, body: TutorRequestBody) {
     },
   });
 
-  return withLovableAiGatewayRunIdHeader(
-    result.toTextStreamResponse(),
-    runIdFetch,
-    { "Content-Type": "text/plain; charset=utf-8" },
-  );
+  return withLovableAiGatewayRunIdHeader(result.toTextStreamResponse(), runIdFetch, {
+    "Content-Type": "text/plain; charset=utf-8",
+  });
 }
 
 // Tutor IA: verificado con ai@7 + @ai-sdk/openai@4 (override @ai-sdk/provider 4.0.33).

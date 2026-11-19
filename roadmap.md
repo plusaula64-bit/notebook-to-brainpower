@@ -49,3 +49,4 @@
 - [x] PWA offline definitiva: arreglado el service worker publicado (no se instalaba), copia de la app guardada para abrir sin red, datos en IndexedDB protegidos
 - [ ] Comprobar en el celular la app publicada sin internet (necesita publicar)
 - [x] Milo responde siempre: motor interno con biblioteca académica para chat, resúmenes, esquema de llaves y flashcards cuando la IA externa no está disponible; sin avisos de créditos
+- [x] Rigor académico en Milo: Historia del Perú por etapas exactas (militarismos, guano, Guerra con Chile, etc.) y fechas corregidas
