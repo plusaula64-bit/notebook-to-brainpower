@@ -871,59 +871,83 @@ export function toolsMaterial(material: string, generated: (string | undefined)[
 
 export type MiloQuizItem = { question: string; options: string[]; answer: string };
 
-export function miloQuiz(topic: string, material: string, count = 5): MiloQuizItem[] {
-  const own = makeQuiz(material, count);
-  if (own.length >= 3) return own;
+/**
+ * Cuestionario: si el tema está en la biblioteca, las preguntas salen de sus etapas y conceptos (exactas);
+ * los apuntes del estudiante aportan como máximo 2 preguntas. Si no, se usan apuntes + contenido generado.
+ */
+export function miloQuiz(
+  topic: string,
+  material: string,
+  count = 5,
+  generated = "",
+): MiloQuizItem[] {
   const t = findTopic(topic, material);
+  const own = t ? makeQuiz(material, 2) : makeQuiz(joinText(material, generated), count);
+  if (!t && own.length >= 3) return own;
   const branches: MindBranch[] = t ? t.branches : frameworkBranches(topic);
-  const all = branches.flatMap((b) => b.points.map((p) => ({ b, p })));
-  const labels = all.map((x) => x.p.label);
+  const all = branches.flatMap((b) => b.points.map((p) => ({ b, p, name: pname(p, b) })));
   const rand = mulberry32(7);
   const extra = shuffle(all, rand)
     .slice(0, count - own.length)
-    .map(({ b, p }) => {
-      const near = b.points.map((x) => x.label).filter((l) => l !== p.label);
+    .map(({ b, p, name }) => {
+      const near = all.filter((x) => x.b === b && x.p !== p).map((x) => x.name);
       const far = shuffle(
-        labels.filter((l) => l !== p.label && !near.includes(l)),
+        all.filter((x) => x.b !== b).map((x) => x.name),
         rand,
       );
-      const options = [p.label, ...[...near, ...far].slice(0, 3)].sort((a, c) =>
-        a.localeCompare(c),
-      );
+      const options = [name, ...[...near, ...far].slice(0, 3)].sort((a, c) => a.localeCompare(c));
       return {
         question: `¿Qué concepto corresponde a esta descripción? «${dot(cap(p.detail))}»`,
         options,
-        answer: p.label,
+        answer: name,
       };
     });
   return [...own, ...extra];
 }
 
-export function miloAudioLines(topic: string, material: string) {
-  const own = summarize(material, 5);
-  if (own.length >= 3) return own;
+export function miloAudioLines(topic: string, material: string, generated = "") {
   const t = findTopic(topic, material);
-  if (!t) return [...own, ...frameworkBranches(topic).map((b) => `${b.label}: ${dot(b.summary)}`)];
+  if (!t) {
+    const own = summarize(joinText(material, generated), 5);
+    return own.length >= 3
+      ? own
+      : [...own, ...frameworkBranches(topic).map((b) => `${b.label}: ${dot(b.summary)}`)];
+  }
   return [
     stripMd(t.intro).split("\n")[0]!,
     ...t.branches.map(
       (b) =>
-        `${b.label}: ${lowerFirst(b.summary)}. Incluye ${b.points.map((p) => p.label.toLowerCase()).join(", ")}.`,
+        `${b.label}: ${lowerFirst(b.summary)}. Incluye ${b.points.map((p) => pname(p, b)).join(", ")}.`,
     ),
-    ...own,
+    ...summarize(material, 2),
   ];
 }
 
-export function miloTable(topic: string, material: string) {
-  const own = dataTable(material).filter((r) => r.context);
-  if (own.length >= 4) return own;
+export function miloTable(topic: string, material: string, generated = "") {
   const t = findTopic(topic, material);
-  const points = (t ? t.branches : frameworkBranches(topic)).flatMap((b) => b.points);
+  if (!t) {
+    const own = dataTable(joinText(material, generated)).filter((r) => r.context);
+    if (own.length >= 4) return own;
+    const text = norm(material);
+    return [
+      ...own,
+      ...frameworkBranches(topic)
+        .flatMap((b) => b.points)
+        .map((p) => ({
+          term: p.label,
+          count: Math.max(1, hits(text, norm(p.label))),
+          context: dot(cap(p.detail)),
+        })),
+    ];
+  }
   const text = norm(material);
-  const rows = points.slice(0, 10).map((p) => ({
-    term: p.label,
-    count: Math.max(1, hits(text, norm(p.label))),
-    context: dot(cap(p.detail)),
-  }));
-  return [...own, ...rows.filter((r) => !own.some((o) => norm(o.term) === norm(r.term)))];
+  return t.branches
+    .flatMap((b) =>
+      b.points.map((p) => ({
+        term: pname(p, b),
+        count: Math.max(1, hits(text, norm(p.label))),
+        context: dot(cap(p.detail)),
+      })),
+    )
+    .slice(0, 12);
 }

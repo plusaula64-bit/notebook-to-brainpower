@@ -208,3 +208,23 @@ describe("flashcards de historia sin preguntas ambiguas", () => {
     expect(card?.answer).toContain("1939 a 1968");
   });
 });
+
+describe("Autoevaluación de Historia del Perú", () => {
+  it("pregunta por etapas con su descripción, aunque ya exista un resumen generado", async () => {
+    const { miloQuiz, miloSummary, toolsMaterial } = await import("@/lib/milo/engine");
+    const generated = toolsMaterial("", [miloSummary("Historia del Perú", "")]);
+    const quiz = miloQuiz("Historia del Perú", "", 5, generated);
+    expect(quiz).toHaveLength(5);
+    for (const q of quiz) {
+      expect(q.question).toMatch(/^¿Qué concepto corresponde a esta descripción\?/);
+      expect(q.options).toContain(q.answer);
+    }
+  });
+
+  it("al completar frases de los apuntes, nunca corta una palabra por la mitad", async () => {
+    const { makeQuiz } = await import("@/lib/tutor");
+    const text =
+      "Los primeros pobladores llegaron hace miles de años. El primer horizonte fue Chavín y el horizonte medio fue Wari. Los pobladores del horizonte tardío fueron los incas. El primer imperio andino fue Wari según varios autores.";
+    for (const q of makeQuiz(text)) expect(q.question).not.toMatch(/_____[a-záéíóúñ]/i);
+  });
+});
